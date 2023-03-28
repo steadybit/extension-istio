@@ -1,5 +1,35 @@
 apiVersion: v1
 entries:
+  steadybit-extension-istio:
+  - annotations:
+      artifacthub.io/images: |
+        - name: logo
+          image: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+      artifacthub.io/links: |-
+        - name: Steadybit website
+          url: https://www.steadybit.com
+        - name: Steadybit reliability hub
+          url: https://hub.steadybit.com
+    apiVersion: v2
+    appVersion: latest
+    created: "2023-03-28T14:09:27.89027504Z"
+    dependencies:
+    - name: extensionlib
+      repository: https://steadybit.github.io/helm-charts
+      version: 1.0.0
+    description: Steadybit istio extension Helm chart for Kubernetes.
+    digest: b26085578dc7993002c6763514c0c51a9961a0657eb83b223aeaaacb3aff203f
+    home: https://www.steadybit.com/
+    icon: https://steadybit-website-assets.s3.amazonaws.com/logo-symbol-transparent.png
+    maintainers:
+    - email: ben.blackmore@steadybit.com
+      name: bripkens
+    name: steadybit-extension-istio
+    sources:
+    - https://github.com/steadybit/extension-istio
+    urls:
+    - https://github.com/steadybit/extension-istio/releases/download/steadybit-extension-istio-1.0.1/steadybit-extension-istio-1.0.1.tgz
+    version: 1.0.1
   steadybit-extension-scaffold:
   - annotations:
       artifacthub.io/images: |
@@ -59,4 +89,4 @@ entries:
     urls:
     - https://github.com/steadybit/extension-scaffold/releases/download/steadybit-extension-scaffold-1.0.0/steadybit-extension-scaffold-1.0.0.tgz
     version: 1.0.0
-generated: "2023-02-01T13:57:02.523575323Z"
+generated: "2023-03-28T14:09:27.89028364Z"
