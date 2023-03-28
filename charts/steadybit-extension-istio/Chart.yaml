@@ -1,6 +1,6 @@
 apiVersion: v2
-name: steadybit-extension-scaffold
-description: Steadybit scaffold extension Helm chart for Kubernetes.
+name: steadybit-extension-istio
+description: Steadybit istio extension Helm chart for Kubernetes.
 version: 1.0.1
 appVersion: latest
 home: https://www.steadybit.com/
@@ -9,7 +9,7 @@ maintainers:
   - email: ben.blackmore@steadybit.com
     name: bripkens
 sources:
-  - https://github.com/steadybit/extension-scaffold
+  - https://github.com/steadybit/extension-istio
 annotations:
   artifacthub.io/images: |
     - name: logo

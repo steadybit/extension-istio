@@ -1,15 +1,18 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
+
 package main
 
 import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
 	"github.com/steadybit/event-kit/go/event_kit_api"
+	"github.com/steadybit/extension-istio/extconfig"
+	"github.com/steadybit/extension-istio/extevents"
+	"github.com/steadybit/extension-istio/extrobots"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extlogging"
-	"github.com/steadybit/extension-scaffold/extconfig"
-	"github.com/steadybit/extension-scaffold/extevents"
-	"github.com/steadybit/extension-scaffold/extrobots"
 )
 
 func main() {

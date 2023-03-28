@@ -1,10 +1,13 @@
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
+
 package extrobots
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/extension-istio/extconfig"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
-	"github.com/steadybit/extension-scaffold/extconfig"
 	"net/http"
 )
 
@@ -105,7 +108,7 @@ func getDiscoveredTargets(w http.ResponseWriter, r *http.Request, _ []byte) {
 			Id:         name,
 			TargetType: targetID,
 			Label:      name,
-			Attributes: map[string][]string{"robot.reportedBy": {"extension-scaffold"}},
+			Attributes: map[string][]string{"robot.reportedBy": {"extension-istio"}},
 		}
 	}
 	exthttp.WriteBody(w, discovery_kit_api.DiscoveredTargets{Targets: targets})
