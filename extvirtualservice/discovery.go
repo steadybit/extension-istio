@@ -1,11 +1,11 @@
 // SPDX-License-Identifier: MIT
 // SPDX-FileCopyrightText: 2023 Steadybit GmbH
 
-package extrobots
+package extvirtualservice
 
 import (
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
-	"github.com/steadybit/extension-istio/extconfig"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"net/http"
@@ -45,7 +45,7 @@ func GetDiscoveryList() discovery_kit_api.DiscoveryList {
 
 func getDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         targetID,
+		Id:         virtualServiceTargetId,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			Method:       "GET",
@@ -57,29 +57,21 @@ func getDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 
 func getTargetDescription() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:   targetID,
-		Icon: extutil.Ptr(targetIcon),
+		Id:       virtualServiceTargetId,
+		Icon:     extutil.Ptr(targetIcon),
+		Label:    discovery_kit_api.PluralLabel{One: "Virtual Service", Other: "Virtual Services"},
+		Category: extutil.Ptr("Kubernetes"),
+		Version:  extbuild.GetSemverVersionStringOrUnknown(),
 
-		// Labels used in the UI
-		Label: discovery_kit_api.PluralLabel{One: "Robot", Other: "Robots"},
-
-		// Category for the targets to appear in
-		Category: extutil.Ptr("example"),
-
-		// Version of the target type; this used for caching
-		// When doing changes the version should be bumped.
-		// When developing the SNAPSHOT suffix will prevent
-		Version: "1.0.0-SNAPSHOT",
-
-		// Specify attributes shown in table columns and to be used for sorting
 		Table: discovery_kit_api.Table{
 			Columns: []discovery_kit_api.Column{
-				{Attribute: "steadybit.label"},
-				{Attribute: "robot.reportedBy"},
+				{Attribute: "istio.virtual-service.name"},
+				{Attribute: "k8s.namespace"},
+				{Attribute: "k8s.cluster-name"},
 			},
 			OrderBy: []discovery_kit_api.OrderBy{
 				{
-					Attribute: "steadybit.label",
+					Attribute: "istio.virtual-service.name",
 					Direction: "ASC",
 				},
 			},
@@ -91,10 +83,10 @@ func getAttributeDescriptions() discovery_kit_api.AttributeDescriptions {
 	return discovery_kit_api.AttributeDescriptions{
 		Attributes: []discovery_kit_api.AttributeDescription{
 			{
-				Attribute: "robot.reportedBy",
+				Attribute: "istio.virtual-service.name",
 				Label: discovery_kit_api.PluralLabel{
-					One:   "Reported by",
-					Other: "Reported by",
+					One:   "Virtual Service",
+					Other: "Virtual Services",
 				},
 			},
 		},
@@ -102,14 +94,6 @@ func getAttributeDescriptions() discovery_kit_api.AttributeDescriptions {
 }
 
 func getDiscoveredTargets(w http.ResponseWriter, r *http.Request, _ []byte) {
-	targets := make([]discovery_kit_api.Target, len(extconfig.Config.RobotNames))
-	for i, name := range extconfig.Config.RobotNames {
-		targets[i] = discovery_kit_api.Target{
-			Id:         name,
-			TargetType: targetID,
-			Label:      name,
-			Attributes: map[string][]string{"robot.reportedBy": {"extension-istio"}},
-		}
-	}
+	var targets []discovery_kit_api.Target
 	exthttp.WriteBody(w, discovery_kit_api.DiscoveredTargets{Targets: targets})
 }

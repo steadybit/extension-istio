@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-// SPDX-FileCopyrightText: 2022 Steadybit GmbH
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
 
 package extconfig
 
@@ -8,13 +8,8 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-// Specification is the configuration specification for the extension. Configuration values can be applied
-// through environment variables. Learn more through the documentation of the envconfig package.
-// https://github.com/kelseyhightower/envconfig
 type Specification struct {
-	// This is just a sample configuration value. You can remove it. To be set, you would set the environment
-	// variable STEADYBIT_EXTENSION_ROBOT_NAMES="R2-D2,C-3PO".
-	RobotNames []string `json:"robotNames" split_words:"true" required:"true" default:"Bender,Terminator,R2-D2"`
+	ClusterName string `required:"true" split_words:"true"`
 }
 
 var (

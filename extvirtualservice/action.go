@@ -1,4 +1,7 @@
-package extrobots
+// SPDX-License-Identifier: MIT
+// SPDX-FileCopyrightText: 2023 Steadybit GmbH
+
+package extvirtualservice
 
 import (
 	"encoding/json"
@@ -6,13 +9,14 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	extension_kit "github.com/steadybit/extension-kit"
+	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extconversion"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"net/http"
 )
 
-const actionBasePath = basePath + "actions/log"
+const actionBasePath = basePath + "/actions/log"
 
 func RegisterActionHandlers() {
 	exthttp.RegisterHttpHandler(actionBasePath, exthttp.GetterAsHandler(getRobotLogActionDescription))
@@ -35,13 +39,12 @@ func GetActionList() action_kit_api.ActionList {
 
 func getRobotLogActionDescription() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.log", targetID),
+		Id:          fmt.Sprintf("%s.log", virtualServiceTargetId),
 		Label:       "log",
 		Description: "collects information about the monitor status and optionally verifies that the monitor has an expected status.",
-		// TODO document meaning of -SNAPSHOT
-		Version:    "1.0.0-SNAPSHOT",
-		Icon:       extutil.Ptr(targetIcon),
-		TargetType: extutil.Ptr(targetID),
+		Version:     extbuild.GetSemverVersionStringOrUnknown(),
+		Icon:        extutil.Ptr(targetIcon),
+		TargetType:  extutil.Ptr(virtualServiceTargetId),
 		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 			{
 				Label: "by robot name",
