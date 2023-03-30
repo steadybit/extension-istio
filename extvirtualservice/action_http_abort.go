@@ -53,7 +53,7 @@ func getHTTPAbortActionDescription() action_kit_api.ActionDescription {
 				Name:         "percentage",
 				Label:        "Percentage",
 				Description:  extutil.Ptr("Percentage of requests on which the abort will be injected."),
-				Type:         action_kit_api.Duration,
+				Type:         action_kit_api.Percentage,
 				DefaultValue: extutil.Ptr("50"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(1),

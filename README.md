@@ -1,3 +1,5 @@
+<img src="./logo.png" height="130" align="right" alt="Istio logo depicting sails with the text 'Datadog'">
+
 # Steadybit extension-istio
 
 *Open Beta: This extension generally works, but you may discover some rough edges.*

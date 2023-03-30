@@ -24,7 +24,7 @@ func RegisterGrpcAbortActionHandlers() {
 
 func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.http.abort", virtualServiceTargetID),
+		Id:          fmt.Sprintf("%s.grpc.abort", virtualServiceTargetID),
 		Label:       "gRPC Abort",
 		Description: "Injects a gRPC abort fault into all gRPC routes of the targeted virtual services. Abort requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
@@ -53,15 +53,15 @@ func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
 				Name:         "percentage",
 				Label:        "Percentage",
 				Description:  extutil.Ptr("Percentage of requests on which the abort will be injected."),
-				Type:         action_kit_api.Duration,
+				Type:         action_kit_api.Percentage,
 				DefaultValue: extutil.Ptr("50"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(1),
 			},
 			{
 				Name:         "statusCode",
-				Label:        "HTTP Status Code",
-				Description:  extutil.Ptr("HTTP status code to use for aborted requests."),
+				Label:        "gRPC Status Code",
+				Description:  extutil.Ptr("gRPC status code to use for aborted requests."),
 				Type:         action_kit_api.String,
 				DefaultValue: extutil.Ptr("UNAVAILABLE"),
 				// See https://github.com/grpc/grpc/blob/master/doc/statuscodes.md
