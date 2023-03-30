@@ -48,7 +48,7 @@ func GetDiscoveryList() discovery_kit_api.DiscoveryList {
 
 func getDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         virtualServiceTargetId,
+		Id:         virtualServiceTargetID,
 		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			Method:       "GET",
@@ -60,7 +60,7 @@ func getDiscoveryDescription() discovery_kit_api.DiscoveryDescription {
 
 func getTargetDescription() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
-		Id:       virtualServiceTargetId,
+		Id:       virtualServiceTargetID,
 		Icon:     extutil.Ptr(targetIcon),
 		Label:    discovery_kit_api.PluralLabel{One: "Virtual Service", Other: "Virtual Services"},
 		Category: extutil.Ptr("Kubernetes"),
@@ -117,7 +117,7 @@ func GetVirtualServiceTargets(client *extclient.IstioClient) []discovery_kit_api
 		result[i] = discovery_kit_api.Target{
 			Id:         fmt.Sprintf("%s/%s/%s", extconfig.Config.ClusterName, virtualService.Namespace, virtualService.Name),
 			Label:      virtualService.Name,
-			TargetType: virtualServiceTargetId,
+			TargetType: virtualServiceTargetID,
 			Attributes: attributes,
 		}
 	}

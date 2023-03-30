@@ -15,21 +15,21 @@ import (
 
 const httpAbortActionBasePath = basePath + "/actions/http-abort"
 
-func RegisterHttpAbortActionHandlers() {
-	exthttp.RegisterHttpHandler(httpAbortActionBasePath, exthttp.GetterAsHandler(getHttpAbortActionDescription))
-	exthttp.RegisterHttpHandler(httpAbortActionBasePath+"/prepare", prepareHttpAbort)
+func RegisterHTTPAbortActionHandlers() {
+	exthttp.RegisterHttpHandler(httpAbortActionBasePath, exthttp.GetterAsHandler(getHTTPAbortActionDescription))
+	exthttp.RegisterHttpHandler(httpAbortActionBasePath+"/prepare", prepareHTTPAbort)
 	exthttp.RegisterHttpHandler(httpAbortActionBasePath+"/start", startVirtualServiceFault)
 	exthttp.RegisterHttpHandler(httpAbortActionBasePath+"/stop", stopVirtualServiceFault)
 }
 
-func getHttpAbortActionDescription() action_kit_api.ActionDescription {
+func getHTTPAbortActionDescription() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.http.abort", virtualServiceTargetId),
+		Id:          fmt.Sprintf("%s.http.abort", virtualServiceTargetID),
 		Label:       "HTTP Abort",
 		Description: "Injects a HTTP abort fault into all HTTP routes of the targeted virtual services. Abort requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
-		TargetType:  extutil.Ptr(virtualServiceTargetId),
+		TargetType:  extutil.Ptr(virtualServiceTargetID),
 		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 			{
 				Label: "by name",
@@ -83,11 +83,11 @@ func getHttpAbortActionDescription() action_kit_api.ActionDescription {
 	}
 }
 
-func prepareHttpAbort(w http.ResponseWriter, r *http.Request, body []byte) {
-	prepareVirtualServiceFault(w, r, body, toHttpAbortFault)
+func prepareHTTPAbort(w http.ResponseWriter, r *http.Request, body []byte) {
+	prepareVirtualServiceFault(w, r, body, toHTTPAbortFault)
 }
 
-func toHttpAbortFault(request action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection {
+func toHTTPAbortFault(request action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection {
 	return &networkingv1beta1.HTTPFaultInjection{
 		Abort: &networkingv1beta1.HTTPFaultInjection_Abort{
 			ErrorType: &networkingv1beta1.HTTPFaultInjection_Abort_HttpStatus{

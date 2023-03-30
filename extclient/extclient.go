@@ -42,19 +42,19 @@ func (c *IstioClient) GetVirtualServices() []*beta1.VirtualService {
 	return vs
 }
 
-func (c *IstioClient) AddHttpFault(ctx context.Context, namespace string, name string, fault *networkingv1beta1.HTTPFaultInjection) error {
-	return c.ModifyHttpRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
+func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name string, fault *networkingv1beta1.HTTPFaultInjection) error {
+	return c.ModifyHTTPRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
 		http.Fault = fault.DeepCopy()
 	})
 }
 
 func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string) error {
-	return c.ModifyHttpRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
+	return c.ModifyHTTPRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
 		http.Fault = nil
 	})
 }
 
-func (c *IstioClient) ModifyHttpRoutes(ctx context.Context, namespace string, name string, modifier func(route *networkingv1beta1.HTTPRoute)) error {
+func (c *IstioClient) ModifyHTTPRoutes(ctx context.Context, namespace string, name string, modifier func(route *networkingv1beta1.HTTPRoute)) error {
 	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err

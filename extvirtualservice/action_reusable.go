@@ -65,7 +65,7 @@ func startVirtualServiceFault(w http.ResponseWriter, r *http.Request, body []byt
 		return
 	}
 
-	err = extclient.Istio.AddHttpFault(r.Context(), state.Namespace, state.Name, state.Fault)
+	err = extclient.Istio.AddHTTPFault(r.Context(), state.Namespace, state.Name, state.Fault)
 	if err != nil {
 		exthttp.WriteError(w, extension_kit.ToError(fmt.Sprintf("Failed to add HTTP fault to VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err))
 		return

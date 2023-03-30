@@ -28,8 +28,8 @@ func main() {
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 
 	extvirtualservice.RegisterDiscoveryHandlers()
-	extvirtualservice.RegisterHttpDelayActionHandlers()
-	extvirtualservice.RegisterHttpAbortActionHandlers()
+	extvirtualservice.RegisterHTTPDelayActionHandlers()
+	extvirtualservice.RegisterHTTPAbortActionHandlers()
 	extvirtualservice.RegisterGrpcAbortActionHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
