@@ -1,0 +1,2 @@
+### Get virtual services
+GET {{origin}}/virtual-service/discovery/discovered-targets

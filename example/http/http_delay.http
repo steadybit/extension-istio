@@ -1,0 +1,54 @@
+### Get action description
+GET {{origin}}/virtual-service/actions/http-delay
+
+
+### Prepare delay
+POST {{origin}}/virtual-service/actions/http-delay/prepare
+Content-Type: application/json
+
+{
+  "target": {
+    "attributes": {
+      "istio.virtual-service.name": [
+        "bookinfo"
+      ],
+      "k8s.cluster-name": [
+        "minikube"
+      ],
+      "k8s.namespace": [
+        "default"
+      ]
+    },
+    "name": "bookinfo"
+  },
+  "config": {
+    "percentage": 50,
+    "delay": 5000
+  }
+}
+
+### Start delay
+POST {{origin}}/virtual-service/actions/http-delay/start
+Content-Type: application/json
+
+{
+  "state": {
+    "Delay": 5000000000,
+    "Name": "bookinfo",
+    "Namespace": "default",
+    "Percentage": 25
+  }
+}
+
+### Stop delay
+POST {{origin}}/virtual-service/actions/http-delay/stop
+Content-Type: application/json
+
+{
+  "state": {
+    "Delay": 5000000000,
+    "Name": "bookinfo",
+    "Namespace": "default",
+    "Percentage": 25
+  }
+}

@@ -106,11 +106,12 @@ func GetVirtualServiceTargets(client *extclient.IstioClient) []discovery_kit_api
 
 	for i, virtualService := range virtualServices {
 		attributes := make(map[string][]string)
+		attributes["istio.virtual-service.name"] = []string{virtualService.Name}
 		attributes["k8s.namespace"] = []string{virtualService.Namespace}
 		attributes["k8s.cluster-name"] = []string{extconfig.Config.ClusterName}
 
 		for key, value := range virtualService.Labels {
-			attributes["k8s.virtualService.label."+key] = []string{value}
+			attributes["k8s.virtual-service.label."+key] = []string{value}
 		}
 
 		result[i] = discovery_kit_api.Target{

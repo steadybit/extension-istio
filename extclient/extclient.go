@@ -4,13 +4,16 @@
 package extclient
 
 import (
+	"context"
 	"errors"
 	"flag"
 	"github.com/rs/zerolog/log"
+	networkingv1beta1 "istio.io/api/networking/v1beta1"
 	beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
 	versionedClient "istio.io/client-go/pkg/clientset/versioned"
 	informers "istio.io/client-go/pkg/informers/externalversions"
 	"istio.io/client-go/pkg/listers/networking/v1beta1"
+	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/rest"
 	"k8s.io/client-go/tools/cache"
@@ -37,6 +40,32 @@ func (c *IstioClient) GetVirtualServices() []*beta1.VirtualService {
 	}
 
 	return vs
+}
+
+func (c *IstioClient) AddHttpFault(ctx context.Context, namespace string, name string, fault *networkingv1beta1.HTTPFaultInjection) error {
+	return c.ModifyHttpRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
+		http.Fault = fault.DeepCopy()
+	})
+}
+
+func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string) error {
+	return c.ModifyHttpRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
+		http.Fault = nil
+	})
+}
+
+func (c *IstioClient) ModifyHttpRoutes(ctx context.Context, namespace string, name string, modifier func(route *networkingv1beta1.HTTPRoute)) error {
+	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
+	if err != nil {
+		return err
+	}
+
+	vs = vs.DeepCopy()
+	for _, http := range vs.Spec.Http {
+		modifier(http)
+	}
+	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
+	return err
 }
 
 func NewIstioClient(clientset versionedClient.Interface, stopCh <-chan struct{}) *IstioClient {
