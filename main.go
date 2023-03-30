@@ -28,7 +28,9 @@ func main() {
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 
 	extvirtualservice.RegisterDiscoveryHandlers()
-	extvirtualservice.RegisterActionHandlers()
+	extvirtualservice.RegisterHttpDelayActionHandlers()
+	extvirtualservice.RegisterHttpAbortActionHandlers()
+	extvirtualservice.RegisterGrpcAbortActionHandlers()
 
 	exthttp.Listen(exthttp.ListenOpts{
 		Port: 8080,

@@ -12,6 +12,14 @@ func GetActionList() action_kit_api.ActionList {
 				Method: "GET",
 				Path:   httpDelayActionBasePath,
 			},
+			{
+				Method: "GET",
+				Path:   httpAbortActionBasePath,
+			},
+			{
+				Method: "GET",
+				Path:   grpcAbortActionBasePath,
+			},
 		},
 	}
 }

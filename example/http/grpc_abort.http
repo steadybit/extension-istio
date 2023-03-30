@@ -1,9 +1,9 @@
 ### Get action description
-GET {{origin}}/virtual-service/actions/http-delay
+GET {{origin}}/virtual-service/actions/grpc-abort
 
 
-### Prepare delay
-POST {{origin}}/virtual-service/actions/http-delay/prepare
+### Prepare abort
+POST {{origin}}/virtual-service/actions/grpc-abort/prepare
 Content-Type: application/json
 
 {
@@ -23,19 +23,19 @@ Content-Type: application/json
   },
   "config": {
     "percentage": 50,
-    "delay": 5000
+    "statusCode": "CANCELLED"
   }
 }
 
-### Start delay
-POST {{origin}}/virtual-service/actions/http-delay/start
+### Start abort
+POST {{origin}}/virtual-service/actions/grpc-abort/start
 Content-Type: application/json
 
 {
   "state": {
     "Fault": {
-      "delay": {
-        "fixedDelay": "5s",
+      "abort": {
+        "grpcStatus": "CANCELLED",
         "percentage": {
           "value": 50
         }
@@ -46,15 +46,15 @@ Content-Type: application/json
   }
 }
 
-### Stop delay
-POST {{origin}}/virtual-service/actions/http-delay/stop
+### Stop abort
+POST {{origin}}/virtual-service/actions/grpc-abort/stop
 Content-Type: application/json
 
 {
   "state": {
     "Fault": {
-      "delay": {
-        "fixedDelay": "5s",
+      "abort": {
+        "grpcStatus": "CANCELLED",
         "percentage": {
           "value": 50
         }
