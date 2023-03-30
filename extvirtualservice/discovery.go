@@ -4,7 +4,10 @@
 package extvirtualservice
 
 import (
+	"fmt"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/extension-istio/extclient"
+	"github.com/steadybit/extension-istio/extconfig"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
@@ -31,13 +34,13 @@ func GetDiscoveryList() discovery_kit_api.DiscoveryList {
 		TargetTypes: []discovery_kit_api.DescribingEndpointReference{
 			{
 				Method: "GET",
-				Path:   discoveryBasePath + "target-description",
+				Path:   discoveryBasePath + "/target-description",
 			},
 		},
 		TargetAttributes: []discovery_kit_api.DescribingEndpointReference{
 			{
 				Method: "GET",
-				Path:   discoveryBasePath + "attribute-descriptions",
+				Path:   discoveryBasePath + "/attribute-descriptions",
 			},
 		},
 	}
@@ -94,6 +97,29 @@ func getAttributeDescriptions() discovery_kit_api.AttributeDescriptions {
 }
 
 func getDiscoveredTargets(w http.ResponseWriter, r *http.Request, _ []byte) {
-	var targets []discovery_kit_api.Target
-	exthttp.WriteBody(w, discovery_kit_api.DiscoveredTargets{Targets: targets})
+	exthttp.WriteBody(w, discovery_kit_api.DiscoveredTargets{Targets: GetVirtualServiceTargets(extclient.Istio)})
+}
+
+func GetVirtualServiceTargets(client *extclient.IstioClient) []discovery_kit_api.Target {
+	virtualServices := client.GetVirtualServices()
+	result := make([]discovery_kit_api.Target, len(virtualServices))
+
+	for i, virtualService := range virtualServices {
+		attributes := make(map[string][]string)
+		attributes["k8s.namespace"] = []string{virtualService.Namespace}
+		attributes["k8s.cluster-name"] = []string{extconfig.Config.ClusterName}
+
+		for key, value := range virtualService.Labels {
+			attributes["k8s.virtualService.label."+key] = []string{value}
+		}
+
+		result[i] = discovery_kit_api.Target{
+			Id:         fmt.Sprintf("%s/%s/%s", extconfig.Config.ClusterName, virtualService.Namespace, virtualService.Name),
+			Label:      virtualService.Name,
+			TargetType: virtualServiceTargetId,
+			Attributes: attributes,
+		}
+	}
+
+	return result
 }
