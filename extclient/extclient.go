@@ -66,7 +66,7 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name s
 		httpRouteWithFault.Name = NameOfFaultsAddedThroughSteadybit
 		httpRouteWithFault.Fault = fault.DeepCopy()
 		httpRoutes[i] = httpRouteWithFault
-		httpRoutes[i+originalLength] = httpRouteWithoutFault
+		httpRoutes[i+1] = httpRouteWithoutFault
 	}
 
 	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
