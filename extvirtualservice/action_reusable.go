@@ -16,9 +16,10 @@ import (
 )
 
 type ActionState struct {
-	Namespace string
-	Name      string
-	Fault     *networkingv1beta1.HTTPFaultInjection
+	Namespace         string
+	Name              string
+	FaultyRoutePrefix string
+	Fault             *networkingv1beta1.HTTPFaultInjection
 }
 
 func prepareVirtualServiceFault(w http.ResponseWriter,
@@ -33,9 +34,10 @@ func prepareVirtualServiceFault(w http.ResponseWriter,
 	}
 
 	state := ActionState{
-		Namespace: request.Target.Attributes["k8s.namespace"][0],
-		Name:      request.Target.Attributes["istio.virtual-service.name"][0],
-		Fault:     toFault(request),
+		Namespace:         request.Target.Attributes["k8s.namespace"][0],
+		Name:              request.Target.Attributes["istio.virtual-service.name"][0],
+		FaultyRoutePrefix: fmt.Sprintf("steadybit-injected-fault_%s", request.ExecutionId),
+		Fault:             toFault(request),
 	}
 
 	var convertedState action_kit_api.ActionState
@@ -65,7 +67,7 @@ func startVirtualServiceFault(w http.ResponseWriter, r *http.Request, body []byt
 		return
 	}
 
-	err = extclient.Istio.AddHTTPFault(r.Context(), state.Namespace, state.Name, state.Fault)
+	err = extclient.Istio.AddHTTPFault(r.Context(), state.Namespace, state.Name, state.FaultyRoutePrefix, state.Fault)
 	if err != nil {
 		exthttp.WriteError(w, extension_kit.ToError(fmt.Sprintf("Failed to add HTTP fault to VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err))
 		return
@@ -89,7 +91,7 @@ func stopVirtualServiceFault(w http.ResponseWriter, r *http.Request, body []byte
 		return
 	}
 
-	err = extclient.Istio.RemoveAllFaults(r.Context(), state.Namespace, state.Name)
+	err = extclient.Istio.RemoveAllFaults(r.Context(), state.Namespace, state.Name, state.FaultyRoutePrefix)
 	if err != nil {
 		exthttp.WriteError(w, extension_kit.ToError(fmt.Sprintf("Failed to remove HTTP faults from VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err))
 		return

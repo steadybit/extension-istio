@@ -7,6 +7,7 @@ import (
 	"context"
 	"errors"
 	"flag"
+	"fmt"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/exp/slices"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
@@ -21,6 +22,7 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 	"k8s.io/client-go/util/homedir"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -43,9 +45,7 @@ func (c *IstioClient) GetVirtualServices() []*beta1.VirtualService {
 	return vs
 }
 
-const NameOfFaultsAddedThroughSteadybit = "steadybit-extension-istio-route-with-fault"
-
-func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name string, fault *networkingv1beta1.HTTPFaultInjection) error {
+func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name string, faultyRouteNamePrefix string, fault *networkingv1beta1.HTTPFaultInjection) error {
 	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err
@@ -63,7 +63,7 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name s
 
 	for i, httpRouteWithoutFault := range originalRoutes {
 		httpRouteWithFault := httpRouteWithoutFault.DeepCopy()
-		httpRouteWithFault.Name = NameOfFaultsAddedThroughSteadybit
+		httpRouteWithFault.Name = fmt.Sprintf("%s_%d", faultyRouteNamePrefix, i)
 		httpRouteWithFault.Fault = fault.DeepCopy()
 		httpRoutes[i] = httpRouteWithFault
 		httpRoutes[i+1] = httpRouteWithoutFault
@@ -73,7 +73,7 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name s
 	return err
 }
 
-func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string) error {
+func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string, faultyRouteNamePrefix string) error {
 	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err
@@ -86,7 +86,7 @@ func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, nam
 	vs = vs.DeepCopy()
 	for i := len(vs.Spec.Http) - 1; i >= 0; i-- {
 		httpRoute := vs.Spec.Http[i]
-		if httpRoute.Name == NameOfFaultsAddedThroughSteadybit {
+		if strings.HasPrefix(httpRoute.Name, faultyRouteNamePrefix) {
 			vs.Spec.Http = slices.Delete(vs.Spec.Http, i, 1)
 		}
 	}

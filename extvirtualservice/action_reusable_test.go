@@ -7,6 +7,7 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"github.com/google/uuid"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/extension-istio/extclient"
 	"github.com/steadybit/extension-istio/extconfig"
@@ -50,6 +51,7 @@ func Test_attackLifecycle(t *testing.T) {
 
 	// Prepare call
 	prepareBytes, err := json.Marshal(action_kit_api.PrepareActionRequestBody{
+		ExecutionId: uuid.MustParse("22955847-b455-461d-8f9b-61ef1ef05060"),
 		Target: &action_kit_api.Target{
 			Attributes: map[string][]string{
 				"k8s.namespace":              {"default"},
@@ -86,7 +88,7 @@ func Test_attackLifecycle(t *testing.T) {
 		Get(context.Background(), "shop", v1.GetOptions{})
 	require.NoError(t, err)
 	require.Len(t, vs.Spec.Http, 2)
-	require.Equal(t, extclient.NameOfFaultsAddedThroughSteadybit, vs.Spec.Http[0].Name)
+	require.Equal(t, "steadybit-injected-fault_22955847-b455-461d-8f9b-61ef1ef05060_0", vs.Spec.Http[0].Name)
 	require.NotNil(t, vs.Spec.Http[0].Fault)
 	require.Equal(t, "test-route", vs.Spec.Http[1].Name)
 	require.Nil(t, vs.Spec.Http[1].Fault)
@@ -96,7 +98,7 @@ func Test_attackLifecycle(t *testing.T) {
 	stopRecorder := httptest.NewRecorder()
 	stopVirtualServiceFault(stopRecorder, stopReq, prepareRecorder.Body.Bytes())
 
-	// Start result
+	// Stop result
 	stopReqResp := stopRecorder.Result()
 	require.Equal(t, 200, stopReqResp.StatusCode)
 
