@@ -65,8 +65,8 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name s
 		httpRouteWithFault := httpRouteWithoutFault.DeepCopy()
 		httpRouteWithFault.Name = fmt.Sprintf("%s_%d", faultyRouteNamePrefix, i)
 		httpRouteWithFault.Fault = fault.DeepCopy()
-		httpRoutes[i] = httpRouteWithFault
-		httpRoutes[i+1] = httpRouteWithoutFault
+		httpRoutes[i*2] = httpRouteWithFault
+		httpRoutes[i*2+1] = httpRouteWithoutFault
 	}
 
 	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
@@ -87,7 +87,7 @@ func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, nam
 	for i := len(vs.Spec.Http) - 1; i >= 0; i-- {
 		httpRoute := vs.Spec.Http[i]
 		if strings.HasPrefix(httpRoute.Name, faultyRouteNamePrefix) {
-			vs.Spec.Http = slices.Delete(vs.Spec.Http, i, 1)
+			vs.Spec.Http = slices.Delete(vs.Spec.Http, i, i+1)
 		}
 	}
 
