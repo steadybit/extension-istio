@@ -8,6 +8,7 @@ import (
 	"errors"
 	"flag"
 	"github.com/rs/zerolog/log"
+	"golang.org/x/exp/slices"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
 	beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
 	versionedClient "istio.io/client-go/pkg/clientset/versioned"
@@ -42,28 +43,54 @@ func (c *IstioClient) GetVirtualServices() []*beta1.VirtualService {
 	return vs
 }
 
+const NameOfFaultsAddedThroughSteadybit = "steadybit-extension-istio-route-with-fault"
+
 func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name string, fault *networkingv1beta1.HTTPFaultInjection) error {
-	return c.ModifyHTTPRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
-		http.Fault = fault.DeepCopy()
-	})
-}
-
-func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string) error {
-	return c.ModifyHTTPRoutes(ctx, namespace, name, func(http *networkingv1beta1.HTTPRoute) {
-		http.Fault = nil
-	})
-}
-
-func (c *IstioClient) ModifyHTTPRoutes(ctx context.Context, namespace string, name string, modifier func(route *networkingv1beta1.HTTPRoute)) error {
 	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err
 	}
 
-	vs = vs.DeepCopy()
-	for _, http := range vs.Spec.Http {
-		modifier(http)
+	if vs.Spec.Http == nil || len(vs.Spec.Http) == 0 {
+		return nil
 	}
+
+	vs = vs.DeepCopy()
+	originalRoutes := vs.Spec.Http
+	originalLength := len(originalRoutes)
+	httpRoutes := make([]*networkingv1beta1.HTTPRoute, originalLength*2)
+	vs.Spec.Http = httpRoutes
+
+	for i, httpRouteWithoutFault := range originalRoutes {
+		httpRouteWithFault := httpRouteWithoutFault.DeepCopy()
+		httpRouteWithFault.Name = NameOfFaultsAddedThroughSteadybit
+		httpRouteWithFault.Fault = fault.DeepCopy()
+		httpRoutes[i] = httpRouteWithFault
+		httpRoutes[i+originalLength] = httpRouteWithoutFault
+	}
+
+	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
+	return err
+}
+
+func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string) error {
+	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
+	if err != nil {
+		return err
+	}
+
+	if vs.Spec.Http == nil || len(vs.Spec.Http) == 0 {
+		return nil
+	}
+
+	vs = vs.DeepCopy()
+	for i := len(vs.Spec.Http) - 1; i >= 0; i-- {
+		httpRoute := vs.Spec.Http[i]
+		if httpRoute.Name == NameOfFaultsAddedThroughSteadybit {
+			vs.Spec.Http = slices.Delete(vs.Spec.Http, i, 1)
+		}
+	}
+
 	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
 	return err
 }

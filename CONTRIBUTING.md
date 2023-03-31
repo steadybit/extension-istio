@@ -1,11 +1,18 @@
 # Contributing
 
+## Starting Istio Locally
+
+You can follow Istio's official [getting started](https://istio.io/latest/docs/setup/getting-started/) documentation to run Istio locally, e.g., within minikube. As part of this guide, you will configure
+a `VirtualService` resource that you can use within experiments.
+
 ## Getting Started
 
 1. Clone the repository
 2. `$ make tidy`
 3. `$ make run`
 4. `$ open http://localhost:8080`
+
+You may alternatively find the HTTP requests within `example/http` to call the HTTP endpoints.
 
 ## Tasks
 

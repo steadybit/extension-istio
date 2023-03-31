@@ -9,6 +9,7 @@ require (
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.1.0
 	github.com/steadybit/extension-kit v1.7.1
 	github.com/stretchr/testify v1.8.0
+	golang.org/x/exp v0.0.0-20230321023759-10a507213a29
 	google.golang.org/protobuf v1.28.1
 	istio.io/api v0.0.0-20230217221049-9d422bf48675
 	istio.io/client-go v1.17.1
