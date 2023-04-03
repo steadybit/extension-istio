@@ -24,7 +24,20 @@ Content-Type: application/json
   },
   "config": {
     "percentage": 50,
-    "statusCode": "CANCELLED"
+    "statusCode": "CANCELLED",
+    "headers": [
+      {
+        "key": "x-request-id",
+        "value": "22955847-b455-461d-8f9b-61ef1ef05060"
+      }
+    ],
+    "headersMatchType": "prefix",
+    "sourceLabels": [
+      {
+        "key": "app",
+        "value": "shop"
+      }
+    ]
   }
 }
 
@@ -43,8 +56,16 @@ Content-Type: application/json
       }
     },
     "FaultyRoutePrefix": "steadybit-injected-fault_22955847-b455-461d-8f9b-61ef1ef05060",
+    "Headers": {
+      "x-request-id": {
+        "prefix": "22955847-b455-461d-8f9b-61ef1ef05060"
+      }
+    },
     "Name": "bookinfo",
-    "Namespace": "default"
+    "Namespace": "default",
+    "SourceLabels": {
+      "app": "shop"
+    }
   }
 }
 
@@ -63,7 +84,15 @@ Content-Type: application/json
       }
     },
     "FaultyRoutePrefix": "steadybit-injected-fault_22955847-b455-461d-8f9b-61ef1ef05060",
+    "Headers": {
+      "x-request-id": {
+        "prefix": "22955847-b455-461d-8f9b-61ef1ef05060"
+      }
+    },
     "Name": "bookinfo",
-    "Namespace": "default"
+    "Namespace": "default",
+    "SourceLabels": {
+      "app": "shop"
+    }
   }
 }
