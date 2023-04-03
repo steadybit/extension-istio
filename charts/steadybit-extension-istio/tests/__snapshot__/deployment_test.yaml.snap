@@ -42,6 +42,7 @@ manifest should match snapshot with TLS:
             - mountPath: /etc/extension/certificates/server-cert
               name: certificate-server-cert
               readOnly: true
+          serviceAccountName: RELEASE-NAME
           volumes:
           - name: certificate-server-cert
             secret:
@@ -96,6 +97,7 @@ manifest should match snapshot with mutual TLS:
             - mountPath: /etc/extension/certificates/server-cert
               name: certificate-server-cert
               readOnly: true
+          serviceAccountName: RELEASE-NAME
           volumes:
           - name: certificate-client-cert-a
             secret:
@@ -142,4 +144,5 @@ manifest should match snapshot without TLS:
                 cpu: 50m
                 memory: 64Mi
             volumeMounts: null
+          serviceAccountName: RELEASE-NAME
           volumes: null

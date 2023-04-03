@@ -2,7 +2,7 @@
 apiVersion: rbac.authorization.k8s.io/v1
 kind: ClusterRoleBinding
 metadata:
-  name: {{ .Values.clusterRoleBinding.name }}
+  name: {{ .Release.Name }}
   labels:
   {{- range $key, $value := .Values.extraLabels }}
     {{ $key }}: {{ $value }}
@@ -10,9 +10,9 @@ metadata:
 roleRef:
   apiGroup: rbac.authorization.k8s.io
   kind: ClusterRole
-  name: {{ .Values.clusterRole.name }}
+  name: {{ .Release.Name }}
 subjects:
   - kind: ServiceAccount
-    name: {{ .Values.serviceAccount.name }}
+    name: {{ .Release.Name }}
     namespace: {{ .Release.Namespace }}
 {{- end }}
