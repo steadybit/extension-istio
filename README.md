@@ -22,17 +22,6 @@ This extension enables the injection of HTTP and gRPC faults into [Istio's virtu
 
 ## Running the Extension
 
-### Using Docker
-
-```sh
-$ docker run \
-  --rm \
-  -p 8080 \
-  --name steadybit-extension-istio \
-  --env STEADYBIT_EXTENSION_CLUSTER_NAME=my-cluster \
-  ghcr.io/steadybit/extension-istio:latest
-```
-
 ### Using Helm in Kubernetes
 
 ```sh
