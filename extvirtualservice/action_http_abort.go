@@ -39,7 +39,7 @@ func getHTTPAbortActionDescription() action_kit_api.ActionDescription {
 		Category:    extutil.Ptr("Istio"),
 		Kind:        action_kit_api.Attack,
 		TimeControl: action_kit_api.External,
-		Parameters: []action_kit_api.ActionParameter{
+		Parameters: append([]action_kit_api.ActionParameter{
 			{
 				Name:         "duration",
 				Label:        "Duration",
@@ -60,14 +60,14 @@ func getHTTPAbortActionDescription() action_kit_api.ActionDescription {
 			},
 			{
 				Name:         "statusCode",
-				Label:        "HTTP Status Code",
+				Label:        "HTTP status code",
 				Description:  extutil.Ptr("HTTP status code to use for aborted requests."),
 				Type:         action_kit_api.Integer,
 				DefaultValue: extutil.Ptr("500"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(2),
 			},
-		},
+		}, getAdvancedTargetingParameters(3)...),
 		Prepare: action_kit_api.MutatingEndpointReference{
 			Method: "POST",
 			Path:   httpAbortActionBasePath + "/prepare",

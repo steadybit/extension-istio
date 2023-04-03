@@ -39,7 +39,7 @@ func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
 		Category:    extutil.Ptr("Istio"),
 		Kind:        action_kit_api.Attack,
 		TimeControl: action_kit_api.External,
-		Parameters: []action_kit_api.ActionParameter{
+		Parameters: append([]action_kit_api.ActionParameter{
 			{
 				Name:         "duration",
 				Label:        "Duration",
@@ -60,7 +60,7 @@ func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
 			},
 			{
 				Name:         "statusCode",
-				Label:        "gRPC Status Code",
+				Label:        "gRPC status code",
 				Description:  extutil.Ptr("gRPC status code to use for aborted requests."),
 				Type:         action_kit_api.String,
 				DefaultValue: extutil.Ptr("UNAVAILABLE"),
@@ -138,7 +138,7 @@ func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
 				Required: extutil.Ptr(true),
 				Order:    extutil.Ptr(2),
 			},
-		},
+		}, getAdvancedTargetingParameters(3)...),
 		Prepare: action_kit_api.MutatingEndpointReference{
 			Method: "POST",
 			Path:   grpcAbortActionBasePath + "/prepare",

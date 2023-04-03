@@ -41,7 +41,7 @@ func getHTTPDelayActionDescription() action_kit_api.ActionDescription {
 		Category:    extutil.Ptr("Istio"),
 		Kind:        action_kit_api.Attack,
 		TimeControl: action_kit_api.External,
-		Parameters: []action_kit_api.ActionParameter{
+		Parameters: append([]action_kit_api.ActionParameter{
 			{
 				Name:         "duration",
 				Label:        "Duration",
@@ -69,7 +69,7 @@ func getHTTPDelayActionDescription() action_kit_api.ActionDescription {
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(2),
 			},
-		},
+		}, getAdvancedTargetingParameters(3)...),
 		Prepare: action_kit_api.MutatingEndpointReference{
 			Method: "POST",
 			Path:   httpDelayActionBasePath + "/prepare",

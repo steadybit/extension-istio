@@ -45,7 +45,12 @@ func (c *IstioClient) GetVirtualServices() []*beta1.VirtualService {
 	return vs
 }
 
-func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name string, faultyRouteNamePrefix string, fault *networkingv1beta1.HTTPFaultInjection) error {
+func (c *IstioClient) AddHTTPFault(ctx context.Context,
+	namespace string,
+	name string,
+	faultyRouteNamePrefix string,
+	fault *networkingv1beta1.HTTPFaultInjection, sourceLabels map[string]string, headers map[string]*networkingv1beta1.StringMatch) error {
+
 	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err
@@ -64,13 +69,52 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context, namespace string, name s
 	for i, httpRouteWithoutFault := range originalRoutes {
 		httpRouteWithFault := httpRouteWithoutFault.DeepCopy()
 		httpRouteWithFault.Name = fmt.Sprintf("%s_%d", faultyRouteNamePrefix, i)
-		httpRouteWithFault.Fault = fault.DeepCopy()
+		addFault(httpRouteWithFault, fault, sourceLabels, headers)
+
 		httpRoutes[i*2] = httpRouteWithFault
 		httpRoutes[i*2+1] = httpRouteWithoutFault
 	}
 
 	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
 	return err
+}
+
+func addFault(httpRoute *networkingv1beta1.HTTPRoute, fault *networkingv1beta1.HTTPFaultInjection, sourceLabels map[string]string, headers map[string]*networkingv1beta1.StringMatch) {
+	httpRoute.Fault = fault.DeepCopy()
+
+	if len(sourceLabels) == 0 && len(headers) == 0 {
+		return
+	}
+
+	if httpRoute.Match == nil {
+		httpRoute.Match = []*networkingv1beta1.HTTPMatchRequest{}
+	}
+
+	if len(httpRoute.Match) == 0 {
+		httpRoute.Match = append(httpRoute.Match, &networkingv1beta1.HTTPMatchRequest{})
+	}
+
+	for _, matchRequest := range httpRoute.Match {
+		if len(headers) > 0 {
+			if matchRequest.Headers == nil {
+				matchRequest.Headers = headers
+			} else {
+				for key, value := range headers {
+					matchRequest.Headers[key] = value.DeepCopy()
+				}
+			}
+		}
+
+		if len(sourceLabels) > 0 {
+			if matchRequest.SourceLabels == nil {
+				matchRequest.SourceLabels = sourceLabels
+			} else {
+				for key, value := range sourceLabels {
+					matchRequest.SourceLabels[key] = value
+				}
+			}
+		}
+	}
 }
 
 func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string, faultyRouteNamePrefix string) error {

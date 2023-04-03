@@ -3,9 +3,10 @@ module github.com/steadybit/extension-istio
 go 1.19
 
 require (
+	github.com/google/uuid v1.3.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/rs/zerolog v1.27.0
-	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.2.0
+	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.4.2
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.1.0
 	github.com/steadybit/extension-kit v1.7.1
 	github.com/stretchr/testify v1.8.0
@@ -30,7 +31,6 @@ require (
 	github.com/google/gnostic v0.5.7-v3refs // indirect
 	github.com/google/go-cmp v0.5.9 // indirect
 	github.com/google/gofuzz v1.1.0 // indirect
-	github.com/google/uuid v1.3.0 // indirect
 	github.com/imdario/mergo v0.3.6 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
