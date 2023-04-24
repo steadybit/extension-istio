@@ -24,7 +24,7 @@ tidy:
 audit:
 	go vet ./...
 	go run honnef.co/go/tools/cmd/staticcheck@latest -checks=all,-ST1000,-U1000 ./...
-	go test -race -vet=off ./...
+	go test -race -vet=off -coverprofile=coverage.out ./...
 	go mod verify
 
 ## charttesting: Run Helm chart unit tests
@@ -34,6 +34,11 @@ charttesting:
     echo "Unit Testing $$dir"; \
     helm unittest $$dir; \
   done
+
+## chartlint: Lint charts
+.PHONY: chartlint
+chartlint:
+	ct lint --config chartTesting.yaml
 
 # ==================================================================================== #
 # BUILD
