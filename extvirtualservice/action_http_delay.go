@@ -4,39 +4,46 @@
 package extvirtualservice
 
 import (
+	"context"
 	"fmt"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	"google.golang.org/protobuf/types/known/durationpb"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
-	"net/http"
 	"time"
 )
 
-const httpDelayActionBasePath = basePath + "/actions/http-delay"
-
-func RegisterHTTPDelayActionHandlers() {
-	exthttp.RegisterHttpHandler(httpDelayActionBasePath, exthttp.GetterAsHandler(getHTTPDelayActionDescription))
-	exthttp.RegisterHttpHandler(httpDelayActionBasePath+"/prepare", prepareHTTPDelay)
-	exthttp.RegisterHttpHandler(httpDelayActionBasePath+"/start", startVirtualServiceFault)
-	exthttp.RegisterHttpHandler(httpDelayActionBasePath+"/stop", stopVirtualServiceFault)
+type HttpDelayAction struct {
 }
 
-func getHTTPDelayActionDescription() action_kit_api.ActionDescription {
+func NewHttpDelayAction() action_kit_sdk.Action[ActionState] {
+	return HttpDelayAction{}
+}
+
+var _ action_kit_sdk.Action[ActionState] = (*HttpDelayAction)(nil)
+var _ action_kit_sdk.ActionWithStop[ActionState] = (*HttpDelayAction)(nil)
+
+func (f HttpDelayAction) NewEmptyState() ActionState {
+	return ActionState{}
+}
+
+func (f HttpDelayAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
 		Id:          fmt.Sprintf("%s.http.delay", virtualServiceTargetID),
 		Label:       "HTTP Delay",
 		Description: "Injects a HTTP delay fault into all HTTP routes of the targeted virtual services. Delay requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
-		TargetType:  extutil.Ptr(virtualServiceTargetID),
-		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
-			{
-				Label: "by name",
-				Query: "istio.virtual-service.name=\"\"",
-			},
+		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+			TargetType: virtualServiceTargetID,
+			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+				{
+					Label: "by name",
+					Query: "istio.virtual-service.name=\"\"",
+				},
+			}),
 		}),
 		Category:    extutil.Ptr("Istio"),
 		Kind:        action_kit_api.Attack,
@@ -70,23 +77,22 @@ func getHTTPDelayActionDescription() action_kit_api.ActionDescription {
 				Order:        extutil.Ptr(2),
 			},
 		}, getAdvancedTargetingParameters(3)...),
-		Prepare: action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   httpDelayActionBasePath + "/prepare",
-		},
-		Start: action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   httpDelayActionBasePath + "/start",
-		},
-		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   httpDelayActionBasePath + "/stop",
-		}),
+		Prepare: action_kit_api.MutatingEndpointReference{},
+		Start:   action_kit_api.MutatingEndpointReference{},
+		Stop:    extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
 	}
 }
 
-func prepareHTTPDelay(w http.ResponseWriter, r *http.Request, body []byte) {
-	prepareVirtualServiceFault(w, r, body, toHTTPDelayFault)
+func (f HttpDelayAction) Prepare(_ context.Context, state *ActionState, request action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+	return nil, prepareVirtualServiceFault(state, request, toHTTPDelayFault)
+}
+
+func (f HttpDelayAction) Start(ctx context.Context, state *ActionState) (*action_kit_api.StartResult, error) {
+	return nil, startVirtualServiceFault(ctx, state)
+}
+
+func (f HttpDelayAction) Stop(ctx context.Context, state *ActionState) (*action_kit_api.StopResult, error) {
+	return nil, stopVirtualServiceFault(ctx, state)
 }
 
 func toHTTPDelayFault(request action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection {

@@ -4,9 +4,7 @@
 package extvirtualservice
 
 import (
-	"bytes"
 	"context"
-	"encoding/json"
 	"github.com/google/uuid"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/extension-istio/extclient"
@@ -15,7 +13,6 @@ import (
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
 	"istio.io/client-go/pkg/apis/networking/v1beta1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	"net/http/httptest"
 	"testing"
 )
 
@@ -65,7 +62,7 @@ func Test_attackLifecycle(t *testing.T) {
 	require.NoError(t, err)
 
 	// Prepare call
-	prepareBytes, err := json.Marshal(action_kit_api.PrepareActionRequestBody{
+	prepareRequest := action_kit_api.PrepareActionRequestBody{
 		ExecutionId: uuid.MustParse("22955847-b455-461d-8f9b-61ef1ef05060"),
 		Target: &action_kit_api.Target{
 			Attributes: map[string][]string{
@@ -76,28 +73,18 @@ func Test_attackLifecycle(t *testing.T) {
 		Config: map[string]interface{}{
 			"delay":            5000.0,
 			"percentage":       69.0,
-			"sourceLabels":     []map[string]string{},
-			"headers":          []map[string]string{},
+			"sourceLabels":     []any{},
+			"headers":          []any{},
 			"headersMatchType": "exact",
 		},
-	})
+	}
+	state := ActionState{}
+	err = prepareVirtualServiceFault(&state, prepareRequest, toHTTPDelayFault)
 	require.NoError(t, err)
-	prepareReq := httptest.NewRequest("POST", "/", bytes.NewReader(prepareBytes))
-	prepareRecorder := httptest.NewRecorder()
-	prepareVirtualServiceFault(prepareRecorder, prepareReq, prepareBytes, toHTTPDelayFault)
-
-	// Prepare result
-	prepareResp := prepareRecorder.Result()
-	require.Equal(t, 200, prepareResp.StatusCode)
 
 	// Start call
-	startReq := httptest.NewRequest("POST", "/", prepareResp.Body)
-	startRecorder := httptest.NewRecorder()
-	startVirtualServiceFault(startRecorder, startReq, prepareRecorder.Body.Bytes())
-
-	// Start result
-	startReqResp := startRecorder.Result()
-	require.Equal(t, 200, startReqResp.StatusCode)
+	err = startVirtualServiceFault(context.TODO(), &state)
+	require.NoError(t, err)
 
 	// Check that the VirtualService has a configured fault
 	vs, err := clientset.
@@ -142,13 +129,8 @@ func Test_attackLifecycle(t *testing.T) {
 	require.Len(t, vs.Spec.Http[3].Match, 0)
 
 	// Stop call
-	stopReq := httptest.NewRequest("POST", "/", prepareResp.Body)
-	stopRecorder := httptest.NewRecorder()
-	stopVirtualServiceFault(stopRecorder, stopReq, prepareRecorder.Body.Bytes())
-
-	// Stop result
-	stopReqResp := stopRecorder.Result()
-	require.Equal(t, 200, stopReqResp.StatusCode)
+	err = stopVirtualServiceFault(context.TODO(), &state)
+	require.NoError(t, err)
 
 	// Check that the faults were removed from the VirtualService resource
 	vs, err = clientset.
@@ -222,7 +204,7 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 	require.NoError(t, err)
 
 	// Prepare call
-	prepareBytes, err := json.Marshal(action_kit_api.PrepareActionRequestBody{
+	prepareRequest := action_kit_api.PrepareActionRequestBody{
 		ExecutionId: uuid.MustParse("22955847-b455-461d-8f9b-61ef1ef05060"),
 		Target: &action_kit_api.Target{
 			Attributes: map[string][]string{
@@ -233,38 +215,22 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 		Config: map[string]interface{}{
 			"delay":      5000.0,
 			"percentage": 69.0,
-			"sourceLabels": []map[string]string{
-				{
-					"key":   "app",
-					"value": "shop",
-				},
+			"sourceLabels": []interface{}{
+				map[string]interface{}{"key": "app", "value": "shop"},
 			},
-			"headers": []map[string]string{
-				{
-					"key":   "Accept",
-					"value": "application/json",
-				},
+			"headers": []interface{}{
+				map[string]interface{}{"key": "Accept", "value": "application/json"},
 			},
 			"headersMatchType": "exact",
 		},
-	})
+	}
+	state := ActionState{}
+	err = prepareVirtualServiceFault(&state, prepareRequest, toHTTPDelayFault)
 	require.NoError(t, err)
-	prepareReq := httptest.NewRequest("POST", "/", bytes.NewReader(prepareBytes))
-	prepareRecorder := httptest.NewRecorder()
-	prepareVirtualServiceFault(prepareRecorder, prepareReq, prepareBytes, toHTTPDelayFault)
-
-	// Prepare result
-	prepareResp := prepareRecorder.Result()
-	require.Equal(t, 200, prepareResp.StatusCode)
 
 	// Start call
-	startReq := httptest.NewRequest("POST", "/", prepareResp.Body)
-	startRecorder := httptest.NewRecorder()
-	startVirtualServiceFault(startRecorder, startReq, prepareRecorder.Body.Bytes())
-
-	// Start result
-	startReqResp := startRecorder.Result()
-	require.Equal(t, 200, startReqResp.StatusCode)
+	err = startVirtualServiceFault(context.TODO(), &state)
+	require.NoError(t, err)
 
 	// Check that the VirtualService has a configured fault
 	vs, err := clientset.
@@ -324,13 +290,8 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 	require.Len(t, vs.Spec.Http[3].Match, 0)
 
 	// Stop call
-	stopReq := httptest.NewRequest("POST", "/", prepareResp.Body)
-	stopRecorder := httptest.NewRecorder()
-	stopVirtualServiceFault(stopRecorder, stopReq, prepareRecorder.Body.Bytes())
-
-	// Stop result
-	stopReqResp := stopRecorder.Result()
-	require.Equal(t, 200, stopReqResp.StatusCode)
+	err = stopVirtualServiceFault(context.TODO(), &state)
+	require.NoError(t, err)
 
 	// Check that the faults were removed from the VirtualService resource
 	vs, err = clientset.

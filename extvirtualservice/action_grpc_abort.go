@@ -4,37 +4,44 @@
 package extvirtualservice
 
 import (
+	"context"
 	"fmt"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
-	"net/http"
 )
 
-const grpcAbortActionBasePath = basePath + "/actions/grpc-abort"
-
-func RegisterGrpcAbortActionHandlers() {
-	exthttp.RegisterHttpHandler(grpcAbortActionBasePath, exthttp.GetterAsHandler(getGrpcAbortActionDescription))
-	exthttp.RegisterHttpHandler(grpcAbortActionBasePath+"/prepare", prepareGrpcAbort)
-	exthttp.RegisterHttpHandler(grpcAbortActionBasePath+"/start", startVirtualServiceFault)
-	exthttp.RegisterHttpHandler(grpcAbortActionBasePath+"/stop", stopVirtualServiceFault)
+type GrpcAbortAction struct {
 }
 
-func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
+func NewGrpcAbortAction() action_kit_sdk.Action[ActionState] {
+	return GrpcAbortAction{}
+}
+
+var _ action_kit_sdk.Action[ActionState] = (*GrpcAbortAction)(nil)
+var _ action_kit_sdk.ActionWithStop[ActionState] = (*GrpcAbortAction)(nil)
+
+func (f GrpcAbortAction) NewEmptyState() ActionState {
+	return ActionState{}
+}
+
+func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
 		Id:          fmt.Sprintf("%s.grpc.abort", virtualServiceTargetID),
 		Label:       "gRPC Abort",
 		Description: "Injects a gRPC abort fault into all gRPC routes of the targeted virtual services. Abort requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
-		TargetType:  extutil.Ptr(virtualServiceTargetID),
-		TargetSelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
-			{
-				Label: "by name",
-				Query: "istio.virtual-service.name=\"\"",
-			},
+		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+			TargetType: virtualServiceTargetID,
+			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+				{
+					Label: "by name",
+					Query: "istio.virtual-service.name=\"\"",
+				},
+			}),
 		}),
 		Category:    extutil.Ptr("Istio"),
 		Kind:        action_kit_api.Attack,
@@ -139,23 +146,22 @@ func getGrpcAbortActionDescription() action_kit_api.ActionDescription {
 				Order:    extutil.Ptr(2),
 			},
 		}, getAdvancedTargetingParameters(3)...),
-		Prepare: action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   grpcAbortActionBasePath + "/prepare",
-		},
-		Start: action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   grpcAbortActionBasePath + "/start",
-		},
-		Stop: extutil.Ptr(action_kit_api.MutatingEndpointReference{
-			Method: "POST",
-			Path:   grpcAbortActionBasePath + "/stop",
-		}),
+		Prepare: action_kit_api.MutatingEndpointReference{},
+		Start:   action_kit_api.MutatingEndpointReference{},
+		Stop:    extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
 	}
 }
 
-func prepareGrpcAbort(w http.ResponseWriter, r *http.Request, body []byte) {
-	prepareVirtualServiceFault(w, r, body, toGrpcAbortFault)
+func (f GrpcAbortAction) Prepare(_ context.Context, state *ActionState, request action_kit_api.PrepareActionRequestBody) (*action_kit_api.PrepareResult, error) {
+	return nil, prepareVirtualServiceFault(state, request, toGrpcAbortFault)
+}
+
+func (f GrpcAbortAction) Start(ctx context.Context, state *ActionState) (*action_kit_api.StartResult, error) {
+	return nil, startVirtualServiceFault(ctx, state)
+}
+
+func (f GrpcAbortAction) Stop(ctx context.Context, state *ActionState) (*action_kit_api.StopResult, error) {
+	return nil, stopVirtualServiceFault(ctx, state)
 }
 
 func toGrpcAbortFault(request action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection {

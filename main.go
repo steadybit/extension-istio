@@ -34,9 +34,9 @@ func main() {
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 
 	extvirtualservice.RegisterDiscoveryHandlers()
-	extvirtualservice.RegisterHTTPDelayActionHandlers()
-	extvirtualservice.RegisterHTTPAbortActionHandlers()
-	extvirtualservice.RegisterGrpcAbortActionHandlers()
+	action_kit_sdk.RegisterAction(extvirtualservice.NewGrpcAbortAction())
+	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpAbortAction())
+	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpDelayAction())
 
 	action_kit_sdk.InstallSignalHandler()
 	exthealth.SetReady(true)
@@ -52,7 +52,7 @@ type ExtensionListResponse struct {
 
 func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
-		ActionList:    extvirtualservice.GetActionList(),
+		ActionList:    action_kit_sdk.GetActionList(),
 		DiscoveryList: extvirtualservice.GetDiscoveryList(),
 	}
 }

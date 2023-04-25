@@ -4,16 +4,13 @@
 package extvirtualservice
 
 import (
-	"encoding/json"
+	"context"
 	"fmt"
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/extension-istio/extclient"
 	extension_kit "github.com/steadybit/extension-kit"
-	"github.com/steadybit/extension-kit/extconversion"
-	"github.com/steadybit/extension-kit/exthttp"
 	"github.com/steadybit/extension-kit/extutil"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
-	"net/http"
 )
 
 type ActionState struct {
@@ -76,21 +73,13 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 	}
 }
 
-func prepareVirtualServiceFault(w http.ResponseWriter,
-	_ *http.Request,
-	body []byte,
-	toFault func(req action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection) {
-	var request action_kit_api.PrepareActionRequestBody
-	err := json.Unmarshal(body, &request)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
-	}
+func prepareVirtualServiceFault(state *ActionState,
+	request action_kit_api.PrepareActionRequestBody,
+	toFault func(req action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection) error {
 
 	headers, err := toKeyValue(request, "headers")
 	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed prepare attack", err))
-		return
+		return extension_kit.ToError("Failed prepare attack", err)
 	}
 	headersMatchType := request.Config["headersMatchType"].(string)
 
@@ -122,29 +111,16 @@ func prepareVirtualServiceFault(w http.ResponseWriter,
 
 	sourceLabels, err := toKeyValue(request, "sourceLabels")
 	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed prepare attack", err))
-		return
+		return extension_kit.ToError("Failed prepare attack", err)
 	}
 
-	state := ActionState{
-		Namespace:         request.Target.Attributes["k8s.namespace"][0],
-		Name:              request.Target.Attributes["istio.virtual-service.name"][0],
-		FaultyRoutePrefix: fmt.Sprintf("steadybit-injected-fault_%s", request.ExecutionId),
-		Fault:             toFault(request),
-		Headers:           headersWithMatchType,
-		SourceLabels:      sourceLabels,
-	}
-
-	var convertedState action_kit_api.ActionState
-	err = extconversion.Convert(state, &convertedState)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to encode action state", err))
-		return
-	}
-
-	exthttp.WriteBody(w, action_kit_api.PrepareResult{
-		State: convertedState,
-	})
+	state.Namespace = request.Target.Attributes["k8s.namespace"][0]
+	state.Name = request.Target.Attributes["istio.virtual-service.name"][0]
+	state.FaultyRoutePrefix = fmt.Sprintf("steadybit-injected-fault_%s", request.ExecutionId)
+	state.Fault = toFault(request)
+	state.Headers = headersWithMatchType
+	state.SourceLabels = sourceLabels
+	return nil
 }
 
 type keyValue struct {
@@ -170,50 +146,18 @@ func toKeyValue(request action_kit_api.PrepareActionRequestBody, configName stri
 	return result, nil
 }
 
-func startVirtualServiceFault(w http.ResponseWriter, r *http.Request, body []byte) {
-	var request action_kit_api.StartActionRequestBody
-	err := json.Unmarshal(body, &request)
+func startVirtualServiceFault(ctx context.Context, state *ActionState) error {
+	err := extclient.Istio.AddHTTPFault(ctx, state.Namespace, state.Name, state.FaultyRoutePrefix, state.Fault, state.SourceLabels, state.Headers)
 	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
+		return extension_kit.ToError(fmt.Sprintf("Failed to add HTTP fault to VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err)
 	}
-
-	var state ActionState
-	err = extconversion.Convert(request.State, &state)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to convert action state", err))
-		return
-	}
-
-	err = extclient.Istio.AddHTTPFault(r.Context(), state.Namespace, state.Name, state.FaultyRoutePrefix, state.Fault, state.SourceLabels, state.Headers)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError(fmt.Sprintf("Failed to add HTTP fault to VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err))
-		return
-	}
-
-	exthttp.WriteBody(w, action_kit_api.StartResult{})
+	return nil
 }
 
-func stopVirtualServiceFault(w http.ResponseWriter, r *http.Request, body []byte) {
-	var request action_kit_api.StopActionRequestBody
-	err := json.Unmarshal(body, &request)
+func stopVirtualServiceFault(ctx context.Context, state *ActionState) error {
+	err := extclient.Istio.RemoveAllFaults(ctx, state.Namespace, state.Name, state.FaultyRoutePrefix)
 	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to parse request body", err))
-		return
+		return extension_kit.ToError(fmt.Sprintf("Failed to remove HTTP faults from VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err)
 	}
-
-	var state ActionState
-	err = extconversion.Convert(request.State, &state)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError("Failed to convert action state", err))
-		return
-	}
-
-	err = extclient.Istio.RemoveAllFaults(r.Context(), state.Namespace, state.Name, state.FaultyRoutePrefix)
-	if err != nil {
-		exthttp.WriteError(w, extension_kit.ToError(fmt.Sprintf("Failed to remove HTTP faults from VirtualService %s in namespace %s through Kubernetes API.", state.Name, state.Namespace), err))
-		return
-	}
-
-	exthttp.WriteBody(w, action_kit_api.StopResult{})
+	return nil
 }
