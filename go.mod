@@ -9,7 +9,7 @@ require (
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.5.1
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.0
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0
-	github.com/steadybit/extension-kit v1.7.10
+	github.com/steadybit/extension-kit v1.7.11
 	github.com/stretchr/testify v1.8.1
 	golang.org/x/exp v0.0.0-20230420155640-133eef4313cb
 	google.golang.org/protobuf v1.30.0

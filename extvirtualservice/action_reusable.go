@@ -77,7 +77,7 @@ func prepareVirtualServiceFault(state *ActionState,
 	request action_kit_api.PrepareActionRequestBody,
 	toFault func(req action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection) error {
 
-	headers, err := toKeyValue(request, "headers")
+	headers, err := extutil.ToKeyValue(request.Config, "headers")
 	if err != nil {
 		return extension_kit.ToError("Failed prepare attack", err)
 	}
@@ -109,7 +109,7 @@ func prepareVirtualServiceFault(state *ActionState,
 		headersWithMatchType[key] = &match
 	}
 
-	sourceLabels, err := toKeyValue(request, "sourceLabels")
+	sourceLabels, err := extutil.ToKeyValue(request.Config, "sourceLabels")
 	if err != nil {
 		return extension_kit.ToError("Failed prepare attack", err)
 	}
@@ -121,29 +121,6 @@ func prepareVirtualServiceFault(state *ActionState,
 	state.Headers = headersWithMatchType
 	state.SourceLabels = sourceLabels
 	return nil
-}
-
-type keyValue struct {
-	Key   string `json:"key"`
-	Value string `json:"value"`
-}
-
-func toKeyValue(request action_kit_api.PrepareActionRequestBody, configName string) (map[string]string, error) {
-	kv, ok := request.Config[configName].([]any)
-	if !ok {
-		return nil, fmt.Errorf("failed to interpret config value for %s as a key/value array", configName)
-	}
-
-	result := make(map[string]string, len(kv))
-	for _, rawEntry := range kv {
-		entry, ok := rawEntry.(map[string]any)
-		if !ok {
-			return nil, fmt.Errorf("failed to interpret config value for %s as a key/value array", configName)
-		}
-		result[entry["key"].(string)] = entry["value"].(string)
-	}
-
-	return result, nil
 }
 
 func startVirtualServiceFault(ctx context.Context, state *ActionState) error {
