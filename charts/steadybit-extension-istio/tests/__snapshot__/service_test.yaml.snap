@@ -4,7 +4,7 @@ manifest should match snapshot with TLS:
     kind: Service
     metadata:
       annotations:
-        steadybit.com/extension-auto-discovery: "{\n  \"extensions\": [\n    {\n      \"port\": 8080,\n      \"types\": [\"ACTION\",\"DISCOVERY\",\"EVENT\"],\n      \"tls\": {\n        \"server\": {\n          \"extraCertsFile\": \"server-cert/tls.crt\"\n        }\n        \n      }\n    }\n  ]\n}\n"
+        steadybit.com/extension-auto-discovery: "{\n  \"extensions\": [\n    {\n      \"port\": 8080,\n      \"types\": [\"ACTION\",\"DISCOVERY\"],\n      \"tls\": {\n        \"server\": {\n          \"extraCertsFile\": \"server-cert/tls.crt\"\n        }\n        \n      }\n    }\n  ]\n}\n"
       labels: null
       name: RELEASE-NAME-steadybit-extension-istio
       namespace: NAMESPACE
@@ -26,7 +26,7 @@ manifest should match snapshot with mutual TLS:
             "extensions": [
               {
                 "port": 8080,
-                "types": ["ACTION","DISCOVERY","EVENT"],
+                "types": ["ACTION","DISCOVERY"],
                 "tls": {
                   "server": {
                     "extraCertsFile": "server-cert/tls.crt"
@@ -55,7 +55,7 @@ manifest should match snapshot without TLS:
     kind: Service
     metadata:
       annotations:
-        steadybit.com/extension-auto-discovery: "{\n  \"extensions\": [\n    {\n      \"port\": 8080,\n      \"types\": [\"ACTION\",\"DISCOVERY\",\"EVENT\"],\n      \"tls\": {\n        \n      }\n    }\n  ]\n}\n"
+        steadybit.com/extension-auto-discovery: "{\n  \"extensions\": [\n    {\n      \"port\": 8080,\n      \"types\": [\"ACTION\",\"DISCOVERY\"],\n      \"tls\": {\n        \n      }\n    }\n  ]\n}\n"
       labels: null
       name: RELEASE-NAME-steadybit-extension-istio
       namespace: NAMESPACE
