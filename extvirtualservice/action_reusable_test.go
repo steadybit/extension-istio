@@ -9,6 +9,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/extension-istio/extclient"
 	"github.com/steadybit/extension-istio/extconfig"
+	"github.com/steadybit/extension-kit/extutil"
 	"github.com/stretchr/testify/require"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
 	"istio.io/client-go/pkg/apis/networking/v1beta1"
@@ -62,7 +63,7 @@ func Test_attackLifecycle(t *testing.T) {
 	require.NoError(t, err)
 
 	// Prepare call
-	prepareRequest := action_kit_api.PrepareActionRequestBody{
+	prepareRequest := extutil.JsonMangle(action_kit_api.PrepareActionRequestBody{
 		ExecutionId: uuid.MustParse("22955847-b455-461d-8f9b-61ef1ef05060"),
 		Target: &action_kit_api.Target{
 			Attributes: map[string][]string{
@@ -77,7 +78,7 @@ func Test_attackLifecycle(t *testing.T) {
 			"headers":          []any{},
 			"headersMatchType": "exact",
 		},
-	}
+	})
 	state := ActionState{}
 	err = prepareVirtualServiceFault(&state, prepareRequest, toHTTPDelayFault)
 	require.NoError(t, err)
@@ -204,7 +205,7 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 	require.NoError(t, err)
 
 	// Prepare call
-	prepareRequest := action_kit_api.PrepareActionRequestBody{
+	prepareRequest := extutil.JsonMangle(action_kit_api.PrepareActionRequestBody{
 		ExecutionId: uuid.MustParse("22955847-b455-461d-8f9b-61ef1ef05060"),
 		Target: &action_kit_api.Target{
 			Attributes: map[string][]string{
@@ -223,7 +224,7 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 			},
 			"headersMatchType": "exact",
 		},
-	}
+	})
 	state := ActionState{}
 	err = prepareVirtualServiceFault(&state, prepareRequest, toHTTPDelayFault)
 	require.NoError(t, err)

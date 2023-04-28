@@ -5,6 +5,7 @@ package extvirtualservice
 
 import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
+	"github.com/steadybit/extension-kit/extutil"
 	networkingv1beta1 "istio.io/api/networking/v1beta1"
 	"reflect"
 	"testing"
@@ -22,12 +23,12 @@ func Test_toGrpcAbortFault(t *testing.T) {
 		{
 			name: "generates a gRPC fault structure",
 			args: args{
-				request: action_kit_api.PrepareActionRequestBody{
+				request: extutil.JsonMangle(action_kit_api.PrepareActionRequestBody{
 					Config: map[string]interface{}{
 						"statusCode": "UNAVAILABLE",
 						"percentage": 67.0,
 					},
-				},
+				}),
 			},
 			want: &networkingv1beta1.HTTPFaultInjection{
 				Abort: &networkingv1beta1.HTTPFaultInjection_Abort{
