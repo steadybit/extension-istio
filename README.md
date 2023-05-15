@@ -1,4 +1,4 @@
-<img src="./logo.png" height="130" align="right" alt="Istio logo depicting sails with the text 'Datadog'">
+<img src="./logo.png" height="130" align="right" alt="Istio logo depicting sails with the text 'Istio'">
 
 # Steadybit extension-istio
 
