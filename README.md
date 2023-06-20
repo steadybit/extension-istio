@@ -19,9 +19,9 @@ The extension supports all environment variables provided by [steadybit/extensio
 ### Using Helm in Kubernetes
 
 ```sh
-$ helm repo add steadybit-extension-istio https://steadybit.github.io/extension-istio
-$ helm repo update
-$ helm upgrade steadybit-extension-istio \
+helm repo add steadybit-extension-istio https://steadybit.github.io/extension-istio
+helm repo update
+helm upgrade steadybit-extension-istio \
     --install \
     --wait \
     --timeout 5m0s \
