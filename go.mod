@@ -9,9 +9,9 @@ require (
 	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.6.3
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.4
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.3.0
-	github.com/steadybit/extension-kit v1.8.3
+	github.com/steadybit/extension-kit v1.8.4
 	github.com/stretchr/testify v1.8.4
-	golang.org/x/exp v0.0.0-20230725093048-515e97ebf090
+	golang.org/x/exp v0.0.0-20230728194245-b0cb94b80691
 	google.golang.org/protobuf v1.31.0
 	istio.io/api v1.19.0-alpha.1
 	istio.io/client-go v1.18.1
