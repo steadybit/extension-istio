@@ -30,6 +30,8 @@ RUN go build \
 ##
 FROM alpine
 
+LABEL "steadybit.com.discovery-enabled"="false"
+
 ARG USERNAME=steadybit
 ARG USER_UID=10000
 
