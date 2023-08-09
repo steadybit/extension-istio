@@ -7,6 +7,16 @@ tests:
         clusterName: production
     asserts:
       - matchSnapshot: { }
+  - it: manifest should match snapshot using podAnnotations and Labels
+    set:
+      kubernetes:
+        clusterName: production
+      podAnnotations:
+        some-annotation: "some-annotation-value"
+      podLabels:
+        some-label: "some-label-value"
+    asserts:
+      - matchSnapshot: { }
   - it: manifest should match snapshot with TLS
     set:
       kubernetes:
