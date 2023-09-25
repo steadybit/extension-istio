@@ -9,7 +9,8 @@ import (
 )
 
 type Specification struct {
-	ClusterName string `required:"true" split_words:"true"`
+	ClusterName                              string `required:"true" split_words:"true"`
+	DiscoveryAttributesExcludesVirtualSerice []string `json:"discoveryAttributesExcludesVirtualSerice" split_words:"true" required:"false"`
 }
 
 var (

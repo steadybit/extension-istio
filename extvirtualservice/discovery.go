@@ -6,7 +6,8 @@ package extvirtualservice
 import (
 	"fmt"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
-	"github.com/steadybit/extension-istio/extclient"
+  "github.com/steadybit/discovery-kit/go/discovery_kit_commons"
+  "github.com/steadybit/extension-istio/extclient"
 	"github.com/steadybit/extension-istio/extconfig"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/exthttp"
@@ -122,5 +123,5 @@ func GetVirtualServiceTargets(client *extclient.IstioClient) []discovery_kit_api
 		}
 	}
 
-	return result
+	return discovery_kit_commons.ApplyAttributeExcludes(result, extconfig.Config.DiscoveryAttributesExcludesVirtualSerice)
 }

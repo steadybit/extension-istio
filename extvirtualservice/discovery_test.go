@@ -23,6 +23,7 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 	defer close(stopCh)
 	client, clientset := getTestClient(stopCh)
 	extconfig.Config.ClusterName = "development"
+	extconfig.Config.DiscoveryAttributesExcludesVirtualSerice = []string{"k8s.virtual-service.label.toIgnore"}
 
 	_, err := clientset.
 		NetworkingV1beta1().
@@ -37,6 +38,7 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 				Namespace: "default",
 				Labels: map[string]string{
 					"best-city": "Kevelaer",
+					"toIgnore": "Bielefeld",
 				},
 			},
 		}, v1.CreateOptions{})

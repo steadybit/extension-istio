@@ -112,3 +112,9 @@ extraEnv: []
 #  - secretRef:
 #    name: env-secrets
 extraEnvFrom: []
+
+discovery:
+  attributes:
+    excludes:
+      # discovery.attributes.excludes.virtualService -- List of attributes to exclude from discovery.
+      virtualService: []
