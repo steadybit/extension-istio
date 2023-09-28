@@ -38,7 +38,7 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 				Namespace: "default",
 				Labels: map[string]string{
 					"best-city": "Kevelaer",
-					"toIgnore": "Bielefeld",
+					"toIgnore":  "Bielefeld",
 				},
 			},
 		}, v1.CreateOptions{})
