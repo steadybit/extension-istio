@@ -358,10 +358,10 @@ gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C
 gopkg.in/yaml.v3 v3.0.0/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
-istio.io/api v1.19.1 h1:1NJE1+PvOfxkZZ4p4AEzYB7ljJrk0ezgdy8jqT/nZ/k=
-istio.io/api v1.19.1/go.mod h1:KstZe4bKbXouALUJ5PqpjNEhu5nj90HrDFitZfpNhlU=
-istio.io/client-go v1.19.1 h1:tEFQl58Na0CQVU174cNZa6XLKLsc/oyjCpFnegcf0rE=
-istio.io/client-go v1.19.1/go.mod h1:KJYtFD0uRClekP8vuQt3GBAPmC+ncqHG5Q5XawzS6hA=
+istio.io/api v1.19.2-0.20231011000955-f3015ebb5bd4 h1:NoiArVONh9DPs/DovhCCl771BUeEkKp+/GhsRB1YbOk=
+istio.io/api v1.19.2-0.20231011000955-f3015ebb5bd4/go.mod h1:KstZe4bKbXouALUJ5PqpjNEhu5nj90HrDFitZfpNhlU=
+istio.io/client-go v1.19.3 h1:nxNcBhtpJJmSoiTbCzO4Ay4Y1qve4Uct6oiqPSJVNMg=
+istio.io/client-go v1.19.3/go.mod h1:ra3fVlXcquh7EuQnNssuLxfp6lFv/nx5314PvNEzOUs=
 k8s.io/api v0.29.0-alpha.1 h1:2L/HVdzNvB6cEKWWzdz6ocGqUsWvxcnmzuacEhhs0Fk=
 k8s.io/api v0.29.0-alpha.1/go.mod h1:eYxbep9dvaZTFXRWrbVTJWC/F3Y41J7K8xODAOnBYIg=
 k8s.io/apimachinery v0.29.0-alpha.1 h1:d7cj9SSTDXLZxiAJ1g6Oib4Ya+2XTlNOePNYVuATjg4=
