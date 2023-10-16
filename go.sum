@@ -358,8 +358,8 @@ gopkg.in/yaml.v3 v3.0.0-20210107192922-496545a6307b/go.mod h1:K4uyk7z7BCEPqu6E+C
 gopkg.in/yaml.v3 v3.0.0/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
 gopkg.in/yaml.v3 v3.0.1 h1:fxVm/GzAzEWqLHuvctI91KS9hhNmmWOoWu0XTYJS7CA=
 gopkg.in/yaml.v3 v3.0.1/go.mod h1:K4uyk7z7BCEPqu6E+C64Yfv1cQ7kz7rIZviUmN+EgEM=
-istio.io/api v1.19.2-0.20231011000955-f3015ebb5bd4 h1:NoiArVONh9DPs/DovhCCl771BUeEkKp+/GhsRB1YbOk=
-istio.io/api v1.19.2-0.20231011000955-f3015ebb5bd4/go.mod h1:KstZe4bKbXouALUJ5PqpjNEhu5nj90HrDFitZfpNhlU=
+istio.io/api v1.19.3 h1:+Sxwn0IqoAXHcUJVCwigILxOo4yVXzmLamWATxNqhRk=
+istio.io/api v1.19.3/go.mod h1:KstZe4bKbXouALUJ5PqpjNEhu5nj90HrDFitZfpNhlU=
 istio.io/client-go v1.19.3 h1:nxNcBhtpJJmSoiTbCzO4Ay4Y1qve4Uct6oiqPSJVNMg=
 istio.io/client-go v1.19.3/go.mod h1:ra3fVlXcquh7EuQnNssuLxfp6lFv/nx5314PvNEzOUs=
 k8s.io/api v0.29.0-alpha.2 h1:BKUaG/EU82H1Ok1FKHtLWlsPF/2Cye1hCVtMw+DMG9I=
