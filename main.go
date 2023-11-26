@@ -8,6 +8,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
+	"github.com/steadybit/discovery-kit/go/discovery_kit_sdk"
 	"github.com/steadybit/extension-istio/extclient"
 	"github.com/steadybit/extension-istio/extconfig"
 	"github.com/steadybit/extension-istio/extvirtualservice"
@@ -37,7 +38,7 @@ func main() {
 
 	exthttp.RegisterHttpHandler("/", exthttp.GetterAsHandler(getExtensionList))
 
-	extvirtualservice.RegisterDiscoveryHandlers()
+	discovery_kit_sdk.Register(extvirtualservice.NewVirtualServiceDiscovery())
 	action_kit_sdk.RegisterAction(extvirtualservice.NewGrpcAbortAction())
 	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpAbortAction())
 	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpDelayAction())
@@ -57,6 +58,6 @@ type ExtensionListResponse struct {
 func getExtensionList() ExtensionListResponse {
 	return ExtensionListResponse{
 		ActionList:    action_kit_sdk.GetActionList(),
-		DiscoveryList: extvirtualservice.GetDiscoveryList(),
+		DiscoveryList: discovery_kit_sdk.GetDiscoveryList(),
 	}
 }
