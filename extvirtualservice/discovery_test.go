@@ -46,11 +46,11 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 
 	// When
 	assert.Eventually(t, func() bool {
-		return len(GetVirtualServiceTargets(client)) == 1
+		return len(getVirtualServiceTargets(client)) == 1
 	}, time.Minute, 100*time.Millisecond)
 
 	// Then
-	targets := GetVirtualServiceTargets(client)
+	targets := getVirtualServiceTargets(client)
 	require.Len(t, targets, 1)
 	target := targets[0]
 	require.Equal(t, "development/default/shop", target.Id)
