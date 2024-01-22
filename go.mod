@@ -17,7 +17,7 @@ require (
 	google.golang.org/protobuf v1.32.0
 	istio.io/api v1.20.2
 	istio.io/client-go v1.20.2
-	k8s.io/apimachinery v0.29.0
+	k8s.io/apimachinery v0.29.1
 	k8s.io/client-go v0.29.0
 
 )
@@ -106,7 +106,7 @@ require (
 	github.com/zmwangx/debounce v1.0.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.14.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/term v0.15.0 // indirect
