@@ -6,7 +6,7 @@ require (
 	github.com/google/uuid v1.5.0
 	github.com/kelseyhightower/envconfig v1.4.0
 	github.com/rs/zerolog v1.31.0
-	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.8.0
+	github.com/steadybit/action-kit/go/action_kit_api/v2 v2.9.0
 	github.com/steadybit/action-kit/go/action_kit_sdk v1.1.8
 	github.com/steadybit/discovery-kit/go/discovery_kit_api v1.5.0
 	github.com/steadybit/discovery-kit/go/discovery_kit_commons v0.1.0
@@ -73,8 +73,8 @@ require (
 	github.com/kataras/tunnel v0.0.4 // indirect
 	github.com/klauspost/compress v1.17.3 // indirect
 	github.com/klauspost/cpuid/v2 v2.2.6 // indirect
-	github.com/labstack/echo/v4 v4.11.3 // indirect
-	github.com/labstack/gommon v0.4.1 // indirect
+	github.com/labstack/echo/v4 v4.11.4 // indirect
+	github.com/labstack/gommon v0.4.2 // indirect
 	github.com/leodido/go-urn v1.2.4 // indirect
 	github.com/mailgun/raymond/v2 v2.0.48 // indirect
 	github.com/mailru/easyjson v0.7.7 // indirect
@@ -85,6 +85,7 @@ require (
 	github.com/modern-go/reflect2 v1.0.2 // indirect
 	github.com/mohae/deepcopy v0.0.0-20170929034955-c48cc78d4826 // indirect
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
+	github.com/oapi-codegen/runtime v1.1.1 // indirect
 	github.com/pelletier/go-toml/v2 v2.1.0 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
@@ -106,12 +107,12 @@ require (
 	github.com/zmwangx/debounce v1.0.0 // indirect
 	golang.org/x/arch v0.6.0 // indirect
 	golang.org/x/crypto v0.17.0 // indirect
-	golang.org/x/net v0.18.0 // indirect
+	golang.org/x/net v0.19.0 // indirect
 	golang.org/x/oauth2 v0.14.0 // indirect
 	golang.org/x/sys v0.15.0 // indirect
 	golang.org/x/term v0.15.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/time v0.4.0 // indirect
+	golang.org/x/time v0.5.0 // indirect
 	google.golang.org/appengine v1.6.8 // indirect
 	google.golang.org/genproto v0.0.0-20231120223509-83a465c0220f // indirect
 	google.golang.org/genproto/googleapis/api v0.0.0-20231120223509-83a465c0220f // indirect
