@@ -36,8 +36,7 @@ func NewVirtualServiceDiscovery() discovery_kit_sdk.TargetDiscovery {
 
 func (d *serviceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 	return discovery_kit_api.DiscoveryDescription{
-		Id:         virtualServiceTargetID,
-		RestrictTo: extutil.Ptr(discovery_kit_api.LEADER),
+		Id: virtualServiceTargetID,
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			Method:       "GET",
 			Path:         discoveryBasePath + "/discovered-targets",
