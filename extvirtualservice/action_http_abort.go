@@ -29,13 +29,13 @@ func (f HttpAbortAction) NewEmptyState() ActionState {
 
 func (f HttpAbortAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.http.abort", virtualServiceTargetID),
+		Id:          fmt.Sprintf("%s.http.abort", VirtualServiceTargetID),
 		Label:       "HTTP Abort",
 		Description: "Injects a HTTP abort fault into all HTTP routes of the targeted virtual services. Abort requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
-			TargetType: virtualServiceTargetID,
+			TargetType: VirtualServiceTargetID,
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "by name",

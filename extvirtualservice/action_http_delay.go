@@ -31,13 +31,13 @@ func (f HttpDelayAction) NewEmptyState() ActionState {
 
 func (f HttpDelayAction) Describe() action_kit_api.ActionDescription {
 	return action_kit_api.ActionDescription{
-		Id:          fmt.Sprintf("%s.http.delay", virtualServiceTargetID),
+		Id:          fmt.Sprintf("%s.http.delay", VirtualServiceTargetID),
 		Label:       "HTTP Delay",
 		Description: "Injects a HTTP delay fault into all HTTP routes of the targeted virtual services. Delay requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
 		Icon:        extutil.Ptr(targetIcon),
 		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
-			TargetType: virtualServiceTargetID,
+			TargetType: VirtualServiceTargetID,
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "by name",

@@ -46,6 +46,7 @@ func main() {
 	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpDelayAction())
 
 	action_kit_sdk.InstallSignalHandler()
+	action_kit_sdk.RegisterCoverageEndpoints()
 	exthealth.SetReady(true)
 	exthttp.Listen(exthttp.ListenOpts{
 		Port: 8080,

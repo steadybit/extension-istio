@@ -54,7 +54,7 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 	require.Len(t, targets, 1)
 	target := targets[0]
 	require.Equal(t, "development/default/shop", target.Id)
-	require.Equal(t, virtualServiceTargetID, target.TargetType)
+	require.Equal(t, VirtualServiceTargetID, target.TargetType)
 	require.Equal(t, "shop", target.Label)
 	require.Equal(t, map[string][]string{
 		"istio.virtual-service.name":          {"shop"},

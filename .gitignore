@@ -1,4 +1,5 @@
 /extension
 /coverage.out
 /licenses
+/e2e/e2e-coverage-docker.out
 extension-istio
