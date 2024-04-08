@@ -1,5 +1,6 @@
 /extension
 /coverage.out
 /licenses
+/snyk.sarif
 /e2e/e2e-coverage-docker.out
 extension-istio
