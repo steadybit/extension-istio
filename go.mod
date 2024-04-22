@@ -1,8 +1,7 @@
 module github.com/steadybit/extension-istio
 
 go 1.21.0
-
-toolchain go1.21.7
+toolchain go1.22.2
 
 require (
 	github.com/KimMachineGun/automemlimit v0.5.0
@@ -23,8 +22,8 @@ require (
 	google.golang.org/protobuf v1.33.0
 	istio.io/api v1.21.1
 	istio.io/client-go v1.21.1
-	k8s.io/apimachinery v0.29.3
-	k8s.io/client-go v0.29.3
+	k8s.io/apimachinery v0.30.0
+	k8s.io/client-go v0.30.0
 
 )
 
@@ -66,8 +65,6 @@ require (
 	github.com/munnerz/goautoneg v0.0.0-20191010083416-a7dc8b61c822 // indirect
 	github.com/mxk/go-flowrate v0.0.0-20140419014527-cca7078d478f // indirect
 	github.com/oapi-codegen/runtime v1.1.1 // indirect
-	github.com/onsi/ginkgo/v2 v2.13.1 // indirect
-	github.com/onsi/gomega v1.30.0 // indirect
 	github.com/opencontainers/runtime-spec v1.2.0 // indirect
 	github.com/pbnjay/memory v0.0.0-20210728143218-7b4eea64cf58 // indirect
 	github.com/perimeterx/marshmallow v1.1.5 // indirect
@@ -90,7 +87,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
-	k8s.io/api v0.29.3 // indirect
+	k8s.io/api v0.30.0 // indirect
 	k8s.io/klog/v2 v2.120.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240403164606-bc84c2ddaf99 // indirect
 	k8s.io/utils v0.0.0-20240310230437-4693a0247e57 // indirect
