@@ -27,7 +27,7 @@ helm upgrade steadybit-extension-istio \
     --wait \
     --timeout 5m0s \
     --create-namespace \
-    --namespace steadybit-extension \
+    --namespace steadybit-agent \
     --set kubernetes.clusterName="my-cluster" \
     steadybit-extension-istio/steadybit-extension-istio
 ```
