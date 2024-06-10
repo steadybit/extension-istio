@@ -21,8 +21,8 @@ require (
 	go.uber.org/automaxprocs v1.5.3
 	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0
 	google.golang.org/protobuf v1.34.1
-	istio.io/api v1.22.0
-	istio.io/client-go v1.22.0
+	istio.io/api v1.22.1-0.20240524024004-b6815be0740d
+	istio.io/client-go v1.22.1
 	k8s.io/apimachinery v0.30.1
 	k8s.io/client-go v0.30.1
 
