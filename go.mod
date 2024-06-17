@@ -20,7 +20,7 @@ require (
 	github.com/stretchr/testify v1.9.0
 	go.uber.org/automaxprocs v1.5.3
 	golang.org/x/exp v0.0.0-20240404231335-c0f41cb1a7a0
-	google.golang.org/protobuf v1.34.1
+	google.golang.org/protobuf v1.34.2
 	istio.io/api v1.22.1
 	istio.io/client-go v1.22.1
 	k8s.io/apimachinery v0.30.2
