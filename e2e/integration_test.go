@@ -7,8 +7,9 @@ import (
 	"context"
 	"github.com/rs/zerolog/log"
 	"github.com/steadybit/action-kit/go/action_kit_test/e2e"
+	actValidate "github.com/steadybit/action-kit/go/action_kit_test/validate"
 	"github.com/steadybit/discovery-kit/go/discovery_kit_api"
-	"github.com/steadybit/discovery-kit/go/discovery_kit_test/validate"
+	disValidate "github.com/steadybit/discovery-kit/go/discovery_kit_test/validate"
 	"github.com/steadybit/extension-istio/extvirtualservice"
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/stretchr/testify/assert"
@@ -107,11 +108,15 @@ func TestWithMinikube(t *testing.T) {
 			Name: "target discovery",
 			Test: testDiscovery,
 		},
+		{
+			Name: "validate Actions",
+			Test: validateActions,
+		},
 	})
 }
 
 func validateDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
-	assert.NoError(t, validate.ValidateEndpointReferences("/", e.Client))
+	assert.NoError(t, disValidate.ValidateEndpointReferences("/", e.Client))
 }
 
 func testDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
@@ -134,4 +139,8 @@ func testDiscovery(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
 	assert.True(t, e2e.HasAttribute(target, "k8s.namespace", "default"))
 	assert.True(t, e2e.HasAttribute(target, "k8s.cluster-name", "minikube"))
 	assert.True(t, e2e.HasAttribute(target, "k8s.virtual-service.label.best-city", "Kevelaer"))
+}
+
+func validateActions(t *testing.T, _ *e2e.Minikube, e *e2e.Extension) {
+	assert.NoError(t, actValidate.ValidateEndpointReferences("/", e.Client))
 }
