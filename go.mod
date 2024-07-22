@@ -24,7 +24,7 @@ require (
 	istio.io/api v1.23.0-alpha.0
 	istio.io/client-go v1.22.3
 	k8s.io/apimachinery v0.30.3
-	k8s.io/client-go v0.30.2
+	k8s.io/client-go v0.30.3
 
 )
 
@@ -89,7 +89,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
-	k8s.io/api v0.30.2 // indirect
+	k8s.io/api v0.30.3 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20240620174524-b456828f718b // indirect
 	k8s.io/utils v0.0.0-20240502163921-fe8a2dddb1d0 // indirect
