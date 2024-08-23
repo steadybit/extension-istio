@@ -22,7 +22,7 @@ require (
 	golang.org/x/exp v0.0.0-20240613232115-7f521ea00fb8
 	google.golang.org/protobuf v1.34.2
 	istio.io/api v1.23.0
-	istio.io/client-go v1.22.3
+	istio.io/client-go v1.23.0
 	k8s.io/apimachinery v0.31.0
 	k8s.io/client-go v0.31.0
 
