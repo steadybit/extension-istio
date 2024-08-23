@@ -56,7 +56,7 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context,
 		return err
 	}
 
-	if vs.Spec.Http == nil || len(vs.Spec.Http) == 0 {
+	if len(vs.Spec.Http) == 0 {
 		return nil
 	}
 
@@ -123,7 +123,7 @@ func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, nam
 		return err
 	}
 
-	if vs.Spec.Http == nil || len(vs.Spec.Http) == 0 {
+	if len(vs.Spec.Http) == 0 {
 		return nil
 	}
 
