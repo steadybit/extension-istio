@@ -17,9 +17,35 @@ The extension supports all environment variables provided by [steadybit/extensio
 
 ## Installation
 
-### Using Helm in Kubernetes
+## Installation
 
-```sh
+### Kubernetes
+
+Detailed information about agent and extension installation in kubernetes can also be found in
+our [documentation](https://docs.steadybit.com/install-and-configure/install-agent/install-on-kubernetes).
+
+#### Recommended (via agent helm chart)
+
+All extensions provide a helm chart that is also integrated in the
+[helm-chart](https://github.com/steadybit/helm-charts/tree/main/charts/steadybit-agent) of the agent.
+
+You must provide additional values to activate this extension.
+
+```
+--set extension-istio.enabled=true \
+--set extension-istio.kubernetes.clusterName=my-cluster \
+```
+
+Additional configuration options can be found in
+the [helm-chart](https://github.com/steadybit/extension-istio/blob/main/charts/steadybit-extension-istio/values.yaml) of the
+extension.
+
+#### Alternative (via own helm chart)
+
+If you need more control, you can install the extension via its
+dedicated [helm-chart](https://github.com/steadybit/extension-istio/blob/main/charts/steadybit-extension-istio).
+
+```bash
 helm repo add steadybit-extension-istio https://steadybit.github.io/extension-istio
 helm repo update
 helm upgrade steadybit-extension-istio \
@@ -32,7 +58,8 @@ helm upgrade steadybit-extension-istio \
     steadybit-extension-istio/steadybit-extension-istio
 ```
 
-## Register the extension
+## Extension registration
 
-Make sure to register the extension at the steadybit platform. Please refer to
-the [documentation](https://docs.steadybit.com/integrate-with-steadybit/extensions/extension-installation) for more information.
+Make sure that the extension is registered with the agent. In most cases this is done automatically. Please refer to
+the [documentation](https://docs.steadybit.com/install-and-configure/install-agent/extension-discovery) for more
+information about extension registration and how to verify.
