@@ -45,7 +45,7 @@ func main() {
 	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpAbortAction())
 	action_kit_sdk.RegisterAction(extvirtualservice.NewHttpDelayAction())
 
-	action_kit_sdk.InstallSignalHandler()
+	extsignals.ActivateSignalHandlers()
 	action_kit_sdk.RegisterCoverageEndpoints()
 	exthealth.SetReady(true)
 	exthttp.Listen(exthttp.ListenOpts{
