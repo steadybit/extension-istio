@@ -21,8 +21,8 @@ require (
 	google.golang.org/protobuf v1.35.2
 	istio.io/api v1.24.0
 	istio.io/client-go v1.24.0
-	k8s.io/apimachinery v0.31.2
-	k8s.io/client-go v0.31.2
+	k8s.io/apimachinery v0.31.3
+	k8s.io/client-go v0.31.3
 
 )
 
@@ -89,7 +89,7 @@ require (
 	gopkg.in/yaml.v2 v2.4.0 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
-	k8s.io/api v0.31.2 // indirect
+	k8s.io/api v0.31.3 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20241009091222-67ed5848f094 // indirect
 	k8s.io/utils v0.0.0-20240921022957-49e7df575cb6 // indirect
