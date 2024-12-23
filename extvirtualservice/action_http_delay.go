@@ -40,7 +40,7 @@ func (f HttpDelayAction) Describe() action_kit_api.ActionDescription {
 			TargetType: VirtualServiceTargetID,
 			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
 				{
-					Label: "by name",
+					Label: "name",
 					Query: "istio.virtual-service.name=\"\"",
 				},
 			}),
