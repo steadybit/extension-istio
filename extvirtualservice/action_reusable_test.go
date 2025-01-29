@@ -352,13 +352,25 @@ func Test_attackLifecycle_with_source_label(t *testing.T) {
 									},
 								},
 								SourceLabels: map[string]string{
-									"env": "prod",
+									"env": "dev",
 								},
 							},
 						},
 					},
 					{
 						Name: "test-route-2",
+						Match: []*networkingv1beta1.HTTPMatchRequest{
+							{
+								Headers: map[string]*networkingv1beta1.StringMatch{
+									"Content-Type": {
+										MatchType: &networkingv1beta1.StringMatch_Regex{Regex: "text/prod.*"},
+									},
+								},
+								SourceLabels: map[string]string{
+									"env": "prod",
+								},
+							},
+						},
 					},
 				},
 			},
@@ -423,7 +435,7 @@ func Test_attackLifecycle_with_source_label(t *testing.T) {
 				},
 			},
 			SourceLabels: map[string]string{
-				"env": "prod",
+				"env": "dev",
 			},
 		},
 	}, vs.Spec.Http[1].Match)
@@ -432,7 +444,19 @@ func Test_attackLifecycle_with_source_label(t *testing.T) {
 	require.Len(t, vs.Spec.Http[2].Match, 1)
 	require.Equal(t, "test-route-2", vs.Spec.Http[3].Name)
 	require.Nil(t, vs.Spec.Http[3].Fault)
-	require.Len(t, vs.Spec.Http[3].Match, 0)
+	require.Len(t, vs.Spec.Http[3].Match, 1)
+	require.Equal(t, []*networkingv1beta1.HTTPMatchRequest{
+		{
+			Headers: map[string]*networkingv1beta1.StringMatch{
+				"Content-Type": {
+					MatchType: &networkingv1beta1.StringMatch_Regex{Regex: "text/prod.*"},
+				},
+			},
+			SourceLabels: map[string]string{
+				"env": "prod",
+			},
+		},
+	}, vs.Spec.Http[3].Match)
 
 	// Stop call
 	err = stopVirtualServiceFault(context.TODO(), &state)
@@ -455,11 +479,11 @@ func Test_attackLifecycle_with_source_label(t *testing.T) {
 				},
 			},
 			SourceLabels: map[string]string{
-				"env": "prod",
+				"env": "dev",
 			},
 		},
 	}, vs.Spec.Http[0].Match)
 	require.Equal(t, "test-route-2", vs.Spec.Http[1].Name)
 	require.Nil(t, vs.Spec.Http[1].Fault)
-	require.Len(t, vs.Spec.Http[1].Match, 0)
+	require.Len(t, vs.Spec.Http[1].Match, 1)
 }

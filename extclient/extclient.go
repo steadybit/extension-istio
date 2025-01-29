@@ -110,6 +110,11 @@ func addFault(httpRoute *networkingv1beta1.HTTPRoute, fault *networkingv1beta1.H
 				matchRequest.SourceLabels = sourceLabels
 			} else {
 				for key, value := range sourceLabels {
+					if matchRequest.SourceLabels[key] != value {
+						// https://web.clearfeed.app/views/all-requests?request=1061
+						// We don't want to override the sourceLabels if the value is different, it could create a new unwanted route if other match parameters are set.
+						return
+					}
 					matchRequest.SourceLabels[key] = value
 				}
 			}
