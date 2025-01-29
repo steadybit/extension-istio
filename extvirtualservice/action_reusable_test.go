@@ -217,7 +217,7 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 			"delay":      5000.0,
 			"percentage": 69.0,
 			"sourceLabels": []interface{}{
-				map[string]interface{}{"key": "app", "value": "shop"},
+				map[string]interface{}{"key": "env", "value": "prod"},
 			},
 			"headers": []interface{}{
 				map[string]interface{}{"key": "Accept", "value": "application/json"},
@@ -254,7 +254,6 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 			},
 			SourceLabels: map[string]string{
 				"env": "prod",
-				"app": "shop",
 			},
 		},
 	}, vs.Spec.Http[0].Match)
@@ -282,7 +281,7 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 				},
 			},
 			SourceLabels: map[string]string{
-				"app": "shop",
+				"env": "prod",
 			},
 		},
 	}, vs.Spec.Http[2].Match)
