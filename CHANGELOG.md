@@ -1,8 +1,12 @@
 # Changelog
 
+## v1.0.14 (next release)
+
+- update dependencies
+
 ## v1.0.13
 
- update dependencies
+- update dependencies
 - Use uid instead of name for user statement in Dockerfile
 
 ## v1.0.12
