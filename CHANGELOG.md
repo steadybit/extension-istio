@@ -1,6 +1,6 @@
 # Changelog
 
-## v1.0.14 (next release)
+## v1.0.14
 
 - update dependencies
 - Fix: only create faulty route if the sourceLabel is the same as the original route, discard if sourceLabel value is different to not unintentionally create a new faulty route with unwanted destination
