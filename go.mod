@@ -2,8 +2,6 @@ module github.com/steadybit/extension-istio
 
 go 1.24
 
-toolchain go1.24.1
-
 require (
 	github.com/KimMachineGun/automemlimit v0.7.1
 	github.com/google/uuid v1.6.0
@@ -21,8 +19,8 @@ require (
 	go.uber.org/automaxprocs v1.6.0
 	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
 	google.golang.org/protobuf v1.36.5
-	istio.io/api v1.25.0
-	istio.io/client-go v1.25.0
+	istio.io/api v1.25.1-0.20250321204246-eb3f2673759c
+	istio.io/client-go v1.25.1
 	k8s.io/apimachinery v0.32.3
 	k8s.io/client-go v0.32.3
 )
