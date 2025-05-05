@@ -1,6 +1,7 @@
 module github.com/steadybit/extension-istio
 
 go 1.24
+toolchain go1.24.1
 
 require (
 	github.com/KimMachineGun/automemlimit v0.7.2
@@ -21,7 +22,7 @@ require (
 	google.golang.org/protobuf v1.36.6
 	istio.io/api v1.26.0-rc.0
 	istio.io/client-go v1.25.2
-	k8s.io/apimachinery v0.32.3
+	k8s.io/apimachinery v0.33.0
 	k8s.io/client-go v0.32.3
 )
 
@@ -42,7 +43,6 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/google/gofuzz v1.2.0 // indirect
 	github.com/gorilla/websocket v1.5.3 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
