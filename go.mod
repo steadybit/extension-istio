@@ -1,6 +1,8 @@
 module github.com/steadybit/extension-istio
 
-go 1.24
+go 1.24.0
+
+toolchain go1.24.1
 
 require (
 	github.com/KimMachineGun/automemlimit v0.7.2
@@ -17,12 +19,12 @@ require (
 	github.com/steadybit/extension-kit v1.9.0
 	github.com/stretchr/testify v1.10.0
 	go.uber.org/automaxprocs v1.6.0
-	golang.org/x/exp v0.0.0-20250305212735-054e65f0b394
+	golang.org/x/exp v0.0.0-20250506013437-ce4c2cf36ca6
 	google.golang.org/protobuf v1.36.6
-	istio.io/api v1.26.0-rc.0
-	istio.io/client-go v1.25.2
-	k8s.io/apimachinery v0.32.3
-	k8s.io/client-go v0.32.3
+	istio.io/api v1.26.0
+	istio.io/client-go v1.26.0
+	k8s.io/apimachinery v0.33.0
+	k8s.io/client-go v0.33.0
 )
 
 require (
@@ -42,8 +44,7 @@ require (
 	github.com/golang/protobuf v1.5.4 // indirect
 	github.com/google/gnostic-models v0.6.9 // indirect
 	github.com/google/go-cmp v0.7.0 // indirect
-	github.com/google/gofuzz v1.2.0 // indirect
-	github.com/gorilla/websocket v1.5.3 // indirect
+	github.com/gorilla/websocket v1.5.4-0.20250319132907-e064f32e3674 // indirect
 	github.com/josharian/intern v1.0.0 // indirect
 	github.com/json-iterator/go v1.1.12 // indirect
 	github.com/mailru/easyjson v0.9.0 // indirect
@@ -70,7 +71,7 @@ require (
 	github.com/zmwangx/debounce v1.0.0 // indirect
 	golang.org/x/net v0.38.0 // indirect
 	golang.org/x/oauth2 v0.28.0 // indirect
-	golang.org/x/sync v0.12.0 // indirect
+	golang.org/x/sync v0.14.0 // indirect
 	golang.org/x/sys v0.31.0 // indirect
 	golang.org/x/term v0.30.0 // indirect
 	golang.org/x/text v0.23.0 // indirect
@@ -80,7 +81,7 @@ require (
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
 	howett.net/plist v1.0.1 // indirect
-	k8s.io/api v0.32.3 // indirect
+	k8s.io/api v0.33.0 // indirect
 	k8s.io/klog/v2 v2.130.1 // indirect
 	k8s.io/kube-openapi v0.0.0-20250318190949-c8a335a9a2ff // indirect
 	k8s.io/utils v0.0.0-20241210054802-24370beab758 // indirect
