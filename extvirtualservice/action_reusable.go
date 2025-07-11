@@ -28,7 +28,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 			Name:        "headers",
 			Label:       "For requests with HTTP headers",
 			Description: extutil.Ptr("Restrict the fault injection to those HTTP requests that carry all of these HTTP header key/value pairs."),
-			Type:        action_kit_api.KeyValue,
+			Type:        action_kit_api.ActionParameterTypeKeyValue,
 			Advanced:    extutil.Ptr(true),
 			Required:    extutil.Ptr(false),
 			Order:       extutil.Ptr(startOrder + 1),
@@ -37,7 +37,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 			Name:        "headersMatchType",
 			Label:       "HTTP header match type",
 			Description: extutil.Ptr("How the header key/value pairs should be matched."),
-			Type:        action_kit_api.String,
+			Type:        action_kit_api.ActionParameterTypeString,
 			Options: extutil.Ptr([]action_kit_api.ParameterOption{
 				action_kit_api.ExplicitParameterOption{
 					Label: "Exact / equality",
@@ -61,7 +61,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 			Name:        "sourceLabels",
 			Label:       "For requests from sources labeled with",
 			Description: extutil.Ptr("Restrict the fault injection to those HTTP requests coming from source (client) workloads with the given labels."),
-			Type:        action_kit_api.KeyValue,
+			Type:        action_kit_api.ActionParameterTypeKeyValue,
 			Advanced:    extutil.Ptr(true),
 			Required:    extutil.Ptr(false),
 			Order:       extutil.Ptr(startOrder + 3),

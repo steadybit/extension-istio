@@ -51,7 +51,7 @@ func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 				Name:         "duration",
 				Label:        "Duration",
 				Description:  extutil.Ptr("Duration defining for how long the gRPC abort should be injected."),
-				Type:         action_kit_api.Duration,
+				Type:         action_kit_api.ActionParameterTypeDuration,
 				DefaultValue: extutil.Ptr("30s"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(0),
@@ -60,7 +60,7 @@ func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 				Name:         "percentage",
 				Label:        "Percentage",
 				Description:  extutil.Ptr("Percentage of requests on which the abort will be injected."),
-				Type:         action_kit_api.Percentage,
+				Type:         action_kit_api.ActionParameterTypePercentage,
 				DefaultValue: extutil.Ptr("50"),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(1),
@@ -69,7 +69,7 @@ func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 				Name:         "statusCode",
 				Label:        "gRPC status code",
 				Description:  extutil.Ptr("gRPC status code to use for aborted requests."),
-				Type:         action_kit_api.String,
+				Type:         action_kit_api.ActionParameterTypeString,
 				DefaultValue: extutil.Ptr("UNAVAILABLE"),
 				// See https://github.com/grpc/grpc/blob/master/doc/statuscodes.md
 				Options: extutil.Ptr([]action_kit_api.ParameterOption{
