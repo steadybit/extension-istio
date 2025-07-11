@@ -71,6 +71,8 @@ func (f HttpAbortAction) Describe() action_kit_api.ActionDescription {
 				Description:  extutil.Ptr("HTTP status code to use for aborted requests."),
 				Type:         action_kit_api.ActionParameterTypeInteger,
 				DefaultValue: extutil.Ptr("500"),
+				MinValue:     extutil.Ptr(100),
+				MaxValue:     extutil.Ptr(599),
 				Required:     extutil.Ptr(true),
 				Order:        extutil.Ptr(2),
 			},
