@@ -23,7 +23,7 @@ require (
 	google.golang.org/protobuf v1.36.7
 	istio.io/api v1.27.0-rc.0
 	istio.io/client-go v1.26.3
-	k8s.io/apimachinery v0.33.3
+	k8s.io/apimachinery v0.33.4
 	k8s.io/client-go v0.33.3
 )
 
