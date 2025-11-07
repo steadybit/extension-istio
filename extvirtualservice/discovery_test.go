@@ -9,7 +9,7 @@ import (
 	"github.com/steadybit/extension-istio/extconfig"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	"istio.io/client-go/pkg/apis/networking/v1beta1"
+	apiv1 "istio.io/client-go/pkg/apis/networking/v1"
 	versionedClient "istio.io/client-go/pkg/clientset/versioned"
 	testclient "istio.io/client-go/pkg/clientset/versioned/fake"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -26,12 +26,12 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 	extconfig.Config.DiscoveryAttributesExcludesVirtualSerice = []string{"k8s.virtual-service.label.toIgnore"}
 
 	_, err := clientset.
-		NetworkingV1beta1().
+		NetworkingV1().
 		VirtualServices("default").
-		Create(context.Background(), &v1beta1.VirtualService{
+		Create(context.Background(), &apiv1.VirtualService{
 			TypeMeta: v1.TypeMeta{
 				Kind:       "VirtualService",
-				APIVersion: "v1beta1",
+				APIVersion: "v1",
 			},
 			ObjectMeta: v1.ObjectMeta{
 				Name:      "shop",

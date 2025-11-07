@@ -7,7 +7,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/extension-kit/extutil"
 	"google.golang.org/protobuf/types/known/durationpb"
-	networkingv1beta1 "istio.io/api/networking/v1beta1"
+	networkingv1 "istio.io/api/networking/v1"
 	"reflect"
 	"testing"
 	"time"
@@ -20,7 +20,7 @@ func Test_toHTTPDelayFault(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *networkingv1beta1.HTTPFaultInjection
+		want *networkingv1.HTTPFaultInjection
 	}{
 		{
 			name: "generates a HTTP abort structure",
@@ -32,12 +32,12 @@ func Test_toHTTPDelayFault(t *testing.T) {
 					},
 				}),
 			},
-			want: &networkingv1beta1.HTTPFaultInjection{
-				Delay: &networkingv1beta1.HTTPFaultInjection_Delay{
-					HttpDelayType: &networkingv1beta1.HTTPFaultInjection_Delay_FixedDelay{
+			want: &networkingv1.HTTPFaultInjection{
+				Delay: &networkingv1.HTTPFaultInjection_Delay{
+					HttpDelayType: &networkingv1.HTTPFaultInjection_Delay_FixedDelay{
 						FixedDelay: durationpb.New(time.Second * 5),
 					},
-					Percentage: &networkingv1beta1.Percent{
+					Percentage: &networkingv1.Percent{
 						Value: 67.0,
 					},
 				},

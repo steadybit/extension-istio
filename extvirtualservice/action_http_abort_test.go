@@ -6,7 +6,7 @@ package extvirtualservice
 import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/extension-kit/extutil"
-	networkingv1beta1 "istio.io/api/networking/v1beta1"
+	networkingv1 "istio.io/api/networking/v1"
 	"reflect"
 	"testing"
 )
@@ -18,7 +18,7 @@ func Test_toHTTPAbortFault(t *testing.T) {
 	tests := []struct {
 		name string
 		args args
-		want *networkingv1beta1.HTTPFaultInjection
+		want *networkingv1.HTTPFaultInjection
 	}{
 		{
 			name: "generates a HTTP abort structure",
@@ -30,12 +30,12 @@ func Test_toHTTPAbortFault(t *testing.T) {
 					},
 				}),
 			},
-			want: &networkingv1beta1.HTTPFaultInjection{
-				Abort: &networkingv1beta1.HTTPFaultInjection_Abort{
-					ErrorType: &networkingv1beta1.HTTPFaultInjection_Abort_HttpStatus{
+			want: &networkingv1.HTTPFaultInjection{
+				Abort: &networkingv1.HTTPFaultInjection_Abort{
+					ErrorType: &networkingv1.HTTPFaultInjection_Abort_HttpStatus{
 						HttpStatus: 404,
 					},
-					Percentage: &networkingv1beta1.Percent{
+					Percentage: &networkingv1.Percent{
 						Value: 67.0,
 					},
 				},
