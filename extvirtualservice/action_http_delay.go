@@ -11,7 +11,7 @@ import (
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extutil"
 	"google.golang.org/protobuf/types/known/durationpb"
-	networkingv1beta1 "istio.io/api/networking/v1beta1"
+	networkingv1 "istio.io/api/networking/v1"
 	"time"
 )
 
@@ -95,13 +95,13 @@ func (f HttpDelayAction) Stop(ctx context.Context, state *ActionState) (*action_
 	return nil, stopVirtualServiceFault(ctx, state)
 }
 
-func toHTTPDelayFault(request action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection {
-	return &networkingv1beta1.HTTPFaultInjection{
-		Delay: &networkingv1beta1.HTTPFaultInjection_Delay{
-			HttpDelayType: &networkingv1beta1.HTTPFaultInjection_Delay_FixedDelay{
+func toHTTPDelayFault(request action_kit_api.PrepareActionRequestBody) *networkingv1.HTTPFaultInjection {
+	return &networkingv1.HTTPFaultInjection{
+		Delay: &networkingv1.HTTPFaultInjection_Delay{
+			HttpDelayType: &networkingv1.HTTPFaultInjection_Delay_FixedDelay{
 				FixedDelay: durationpb.New(time.Millisecond * time.Duration(request.Config["delay"].(float64))),
 			},
-			Percentage: &networkingv1beta1.Percent{
+			Percentage: &networkingv1.Percent{
 				Value: request.Config["percentage"].(float64),
 			},
 		},

@@ -14,8 +14,8 @@ import (
 	"github.com/steadybit/extension-kit/extlogging"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
-	networking "istio.io/api/networking/v1beta1"
-	"istio.io/client-go/pkg/apis/networking/v1beta1"
+	networking "istio.io/api/networking/v1"
+	apiv1 "istio.io/client-go/pkg/apis/networking/v1"
 	"istio.io/client-go/pkg/clientset/versioned"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	_ "k8s.io/client-go/plugin/pkg/client/auth"
@@ -61,9 +61,9 @@ func TestWithMinikube(t *testing.T) {
 				Weight: 100,
 			}
 			_, err = clientset.
-				NetworkingV1beta1().
+				NetworkingV1().
 				VirtualServices("default").
-				Create(context.Background(), &v1beta1.VirtualService{
+				Create(context.Background(), &apiv1.VirtualService{
 					Spec: networking.VirtualService{
 						Hosts:    []string{"host.minikube.internal"},
 						Gateways: nil,
@@ -81,7 +81,7 @@ func TestWithMinikube(t *testing.T) {
 					},
 					TypeMeta: v1.TypeMeta{
 						Kind:       "VirtualService",
-						APIVersion: "v1beta1",
+						APIVersion: "v1",
 					},
 					ObjectMeta: v1.ObjectMeta{
 						Name:      "shop",

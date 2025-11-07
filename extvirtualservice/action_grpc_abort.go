@@ -10,7 +10,7 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
 	"github.com/steadybit/extension-kit/extutil"
-	networkingv1beta1 "istio.io/api/networking/v1beta1"
+	networkingv1 "istio.io/api/networking/v1"
 )
 
 type GrpcAbortAction struct {
@@ -164,13 +164,13 @@ func (f GrpcAbortAction) Stop(ctx context.Context, state *ActionState) (*action_
 	return nil, stopVirtualServiceFault(ctx, state)
 }
 
-func toGrpcAbortFault(request action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection {
-	return &networkingv1beta1.HTTPFaultInjection{
-		Abort: &networkingv1beta1.HTTPFaultInjection_Abort{
-			ErrorType: &networkingv1beta1.HTTPFaultInjection_Abort_GrpcStatus{
+func toGrpcAbortFault(request action_kit_api.PrepareActionRequestBody) *networkingv1.HTTPFaultInjection {
+	return &networkingv1.HTTPFaultInjection{
+		Abort: &networkingv1.HTTPFaultInjection_Abort{
+			ErrorType: &networkingv1.HTTPFaultInjection_Abort_GrpcStatus{
 				GrpcStatus: request.Config["statusCode"].(string),
 			},
-			Percentage: &networkingv1beta1.Percent{
+			Percentage: &networkingv1.Percent{
 				Value: request.Config["percentage"].(float64),
 			},
 		},

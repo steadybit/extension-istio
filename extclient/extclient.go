@@ -10,11 +10,11 @@ import (
 	"fmt"
 	"github.com/rs/zerolog/log"
 	"golang.org/x/exp/slices"
-	networkingv1beta1 "istio.io/api/networking/v1beta1"
-	beta1 "istio.io/client-go/pkg/apis/networking/v1beta1"
+	apinetv1 "istio.io/api/networking/v1"
+	networkingv1 "istio.io/client-go/pkg/apis/networking/v1"
 	versionedClient "istio.io/client-go/pkg/clientset/versioned"
 	informers "istio.io/client-go/pkg/informers/externalversions"
-	"istio.io/client-go/pkg/listers/networking/v1beta1"
+	v1lister "istio.io/client-go/pkg/listers/networking/v1"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 	"k8s.io/apimachinery/pkg/labels"
 	"k8s.io/client-go/rest"
@@ -30,28 +30,41 @@ var Istio *IstioClient
 
 type IstioClient struct {
 	clientset               versionedClient.Interface
-	virtualServicesLister   v1beta1.VirtualServiceLister
+	virtualServicesLister   v1lister.VirtualServiceLister
 	virtualServicesInformer cache.SharedIndexInformer
+	gatewaysLister          v1lister.GatewayLister
+	gatewaysInformer        cache.SharedIndexInformer
 }
 
-func (c *IstioClient) GetVirtualServices() []*beta1.VirtualService {
+func (c *IstioClient) GetVirtualServices() []*networkingv1.VirtualService {
 	vs, err := c.virtualServicesLister.List(labels.Everything())
 
 	if err != nil {
 		log.Error().Err(err).Msgf("Failed fetching VirtualService resources")
-		return []*beta1.VirtualService{}
+		return []*networkingv1.VirtualService{}
 	}
 
 	return vs
+}
+
+func (c *IstioClient) GetGateways() []*networkingv1.Gateway {
+	gw, err := c.gatewaysLister.List(labels.Everything())
+
+	if err != nil {
+		log.Error().Err(err).Msgf("Failed fetching VirtualService resources")
+		return []*networkingv1.Gateway{}
+	}
+
+	return gw
 }
 
 func (c *IstioClient) AddHTTPFault(ctx context.Context,
 	namespace string,
 	name string,
 	faultyRouteNamePrefix string,
-	fault *networkingv1beta1.HTTPFaultInjection, sourceLabels map[string]string, headers map[string]*networkingv1beta1.StringMatch) error {
+	fault *apinetv1.HTTPFaultInjection, sourceLabels map[string]string, headers map[string]*apinetv1.StringMatch) error {
 
-	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
+	vs, err := c.clientset.NetworkingV1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err
 	}
@@ -63,7 +76,7 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context,
 	vs = vs.DeepCopy()
 	originalRoutes := vs.Spec.Http
 	originalLength := len(originalRoutes)
-	httpRoutes := make([]*networkingv1beta1.HTTPRoute, originalLength*2)
+	httpRoutes := make([]*apinetv1.HTTPRoute, originalLength*2)
 	vs.Spec.Http = httpRoutes
 
 	for i, httpRouteWithoutFault := range originalRoutes {
@@ -75,11 +88,11 @@ func (c *IstioClient) AddHTTPFault(ctx context.Context,
 		httpRoutes[i*2+1] = httpRouteWithoutFault
 	}
 
-	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
+	_, err = c.clientset.NetworkingV1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
 	return err
 }
 
-func addFault(httpRoute *networkingv1beta1.HTTPRoute, fault *networkingv1beta1.HTTPFaultInjection, sourceLabels map[string]string, headers map[string]*networkingv1beta1.StringMatch) {
+func addFault(httpRoute *apinetv1.HTTPRoute, fault *apinetv1.HTTPFaultInjection, sourceLabels map[string]string, headers map[string]*apinetv1.StringMatch) {
 	httpRoute.Fault = fault.DeepCopy()
 
 	if len(sourceLabels) == 0 && len(headers) == 0 {
@@ -87,11 +100,11 @@ func addFault(httpRoute *networkingv1beta1.HTTPRoute, fault *networkingv1beta1.H
 	}
 
 	if httpRoute.Match == nil {
-		httpRoute.Match = []*networkingv1beta1.HTTPMatchRequest{}
+		httpRoute.Match = []*apinetv1.HTTPMatchRequest{}
 	}
 
 	if len(httpRoute.Match) == 0 {
-		httpRoute.Match = append(httpRoute.Match, &networkingv1beta1.HTTPMatchRequest{})
+		httpRoute.Match = append(httpRoute.Match, &apinetv1.HTTPMatchRequest{})
 	}
 
 	for _, matchRequest := range httpRoute.Match {
@@ -123,7 +136,7 @@ func addFault(httpRoute *networkingv1beta1.HTTPRoute, fault *networkingv1beta1.H
 }
 
 func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, name string, faultyRouteNamePrefix string) error {
-	vs, err := c.clientset.NetworkingV1beta1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
+	vs, err := c.clientset.NetworkingV1().VirtualServices(namespace).Get(ctx, name, v1.GetOptions{})
 	if err != nil {
 		return err
 	}
@@ -140,14 +153,14 @@ func (c *IstioClient) RemoveAllFaults(ctx context.Context, namespace string, nam
 		}
 	}
 
-	_, err = c.clientset.NetworkingV1beta1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
+	_, err = c.clientset.NetworkingV1().VirtualServices(namespace).Update(ctx, vs, v1.UpdateOptions{})
 	return err
 }
 
 func NewIstioClient(clientset versionedClient.Interface, stopCh <-chan struct{}) *IstioClient {
 	factory := informers.NewSharedInformerFactory(clientset, 0)
 
-	virtualServices := factory.Networking().V1beta1().VirtualServices()
+	virtualServices := factory.Networking().V1().VirtualServices()
 	virtualServicesInformer := virtualServices.Informer()
 
 	go factory.Start(stopCh)

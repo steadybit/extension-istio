@@ -10,16 +10,16 @@ import (
 	"github.com/steadybit/extension-istio/extclient"
 	extension_kit "github.com/steadybit/extension-kit"
 	"github.com/steadybit/extension-kit/extutil"
-	networkingv1beta1 "istio.io/api/networking/v1beta1"
+	networkingv1 "istio.io/api/networking/v1"
 )
 
 type ActionState struct {
 	Namespace         string
 	Name              string
 	FaultyRoutePrefix string
-	Fault             *networkingv1beta1.HTTPFaultInjection
+	Fault             *networkingv1.HTTPFaultInjection
 	SourceLabels      map[string]string
-	Headers           map[string]*networkingv1beta1.StringMatch
+	Headers           map[string]*networkingv1.StringMatch
 }
 
 func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParameter {
@@ -75,7 +75,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 
 func prepareVirtualServiceFault(state *ActionState,
 	request action_kit_api.PrepareActionRequestBody,
-	toFault func(req action_kit_api.PrepareActionRequestBody) *networkingv1beta1.HTTPFaultInjection) error {
+	toFault func(req action_kit_api.PrepareActionRequestBody) *networkingv1.HTTPFaultInjection) error {
 
 	headers, err := extutil.ToKeyValue(request.Config, "headers")
 	if err != nil {
@@ -83,24 +83,24 @@ func prepareVirtualServiceFault(state *ActionState,
 	}
 	headersMatchType := request.Config["headersMatchType"].(string)
 
-	headersWithMatchType := make(map[string]*networkingv1beta1.StringMatch, len(headers))
+	headersWithMatchType := make(map[string]*networkingv1.StringMatch, len(headers))
 	for key, value := range headers {
-		var match networkingv1beta1.StringMatch
+		var match networkingv1.StringMatch
 		if headersMatchType == "prefix" {
-			match = networkingv1beta1.StringMatch{
-				MatchType: &networkingv1beta1.StringMatch_Prefix{
+			match = networkingv1.StringMatch{
+				MatchType: &networkingv1.StringMatch_Prefix{
 					Prefix: value,
 				},
 			}
 		} else if headersMatchType == "regex" {
-			match = networkingv1beta1.StringMatch{
-				MatchType: &networkingv1beta1.StringMatch_Regex{
+			match = networkingv1.StringMatch{
+				MatchType: &networkingv1.StringMatch_Regex{
 					Regex: value,
 				},
 			}
 		} else {
-			match = networkingv1beta1.StringMatch{
-				MatchType: &networkingv1beta1.StringMatch_Exact{
+			match = networkingv1.StringMatch{
+				MatchType: &networkingv1.StringMatch_Exact{
 					Exact: value,
 				},
 			}
