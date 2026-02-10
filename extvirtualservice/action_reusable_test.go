@@ -21,7 +21,7 @@ func Test_attackLifecycle(t *testing.T) {
 	// General preparation
 	stopCh := make(chan struct{})
 	defer close(stopCh)
-	client, clientset := getTestClient(stopCh)
+	client, clientset := getTestClient(t, stopCh)
 	extclient.Istio = client
 	extconfig.Config.ClusterName = "development"
 
@@ -163,7 +163,7 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 	// General preparation
 	stopCh := make(chan struct{})
 	defer close(stopCh)
-	client, clientset := getTestClient(stopCh)
+	client, clientset := getTestClient(t, stopCh)
 	extclient.Istio = client
 	extconfig.Config.ClusterName = "development"
 
@@ -323,7 +323,7 @@ func Test_attackLifecycle_with_source_label(t *testing.T) {
 	// General preparation
 	stopCh := make(chan struct{})
 	defer close(stopCh)
-	client, clientset := getTestClient(stopCh)
+	client, clientset := getTestClient(t, stopCh)
 	extclient.Istio = client
 	extconfig.Config.ClusterName = "development"
 

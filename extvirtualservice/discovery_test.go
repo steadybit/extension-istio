@@ -13,6 +13,8 @@ import (
 	versionedClient "istio.io/client-go/pkg/clientset/versioned"
 	testclient "istio.io/client-go/pkg/clientset/versioned/fake"
 	v1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	"k8s.io/client-go/features"
+	clientfeaturestesting "k8s.io/client-go/features/testing"
 	"testing"
 	"time"
 )
@@ -21,7 +23,7 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 	// Given
 	stopCh := make(chan struct{})
 	defer close(stopCh)
-	client, clientset := getTestClient(stopCh)
+	client, clientset := getTestClient(t, stopCh)
 	extconfig.Config.ClusterName = "development"
 	extconfig.Config.DiscoveryAttributesExcludesVirtualSerice = []string{"k8s.virtual-service.label.toIgnore"}
 
@@ -64,7 +66,11 @@ func Test_getDiscoveredVirtualServices(t *testing.T) {
 	}, target.Attributes)
 }
 
-func getTestClient(stopCh <-chan struct{}) (*extclient.IstioClient, versionedClient.Interface) {
+func getTestClient(t testing.TB, stopCh <-chan struct{}) (*extclient.IstioClient, versionedClient.Interface) {
+	// Disable WatchListClient feature gate: the fake client doesn't support
+	// the bookmark events required by the WatchList stream, causing informers
+	// to hang indefinitely.
+	clientfeaturestesting.SetFeatureDuringTest(t, features.WatchListClient, false)
 	clientset := testclient.NewSimpleClientset()
 	client := extclient.NewIstioClient(clientset, stopCh)
 	return client, clientset
