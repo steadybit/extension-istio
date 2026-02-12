@@ -16,7 +16,6 @@ require (
 	github.com/steadybit/discovery-kit/go/discovery_kit_test v1.2.1
 	github.com/steadybit/extension-kit v1.10.1
 	github.com/stretchr/testify v1.11.1
-	go.uber.org/automaxprocs v1.6.0
 	golang.org/x/exp v0.0.0-20251113190631-e25ba8c21ef6
 	google.golang.org/protobuf v1.36.11
 	istio.io/api v1.28.3
