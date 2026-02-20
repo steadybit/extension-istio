@@ -193,8 +193,6 @@ manifest should match snapshot with extra env vars:
                   value: INFO
                 - name: STEADYBIT_LOG_FORMAT
                   value: text
-                - name: STEADYBIT_EXTENSION_CLUSTER_NAME
-                  value: null
                 - name: FOO
                   value: bar
               envFrom:
@@ -277,8 +275,6 @@ manifest should match snapshot with extra labels:
                   value: INFO
                 - name: STEADYBIT_LOG_FORMAT
                   value: text
-                - name: STEADYBIT_EXTENSION_CLUSTER_NAME
-                  value: null
               image: ghcr.io/steadybit/extension-istio:v0.0.0
               imagePullPolicy: IfNotPresent
               livenessProbe:
@@ -453,8 +449,6 @@ manifest should match snapshot with mutual TLS using containerPaths:
                   value: /etc/tls/server.key
                 - name: STEADYBIT_EXTENSION_TLS_CLIENT_CAS
                   value: /etc/tls/ca.crt,/etc/tls/ca2.crt
-                - name: STEADYBIT_EXTENSION_CLUSTER_NAME
-                  value: null
               image: ghcr.io/steadybit/extension-istio:v0.0.0
               imagePullPolicy: IfNotPresent
               livenessProbe:
@@ -528,8 +522,6 @@ manifest should match snapshot with podSecurityContext:
                   value: INFO
                 - name: STEADYBIT_LOG_FORMAT
                   value: text
-                - name: STEADYBIT_EXTENSION_CLUSTER_NAME
-                  value: null
               image: ghcr.io/steadybit/extension-istio:v0.0.0
               imagePullPolicy: IfNotPresent
               livenessProbe:
@@ -604,8 +596,6 @@ manifest should match snapshot with priority class:
                   value: INFO
                 - name: STEADYBIT_LOG_FORMAT
                   value: text
-                - name: STEADYBIT_EXTENSION_CLUSTER_NAME
-                  value: null
               image: ghcr.io/steadybit/extension-istio:v0.0.0
               imagePullPolicy: IfNotPresent
               livenessProbe:
