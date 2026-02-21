@@ -89,3 +89,10 @@ tests:
       priorityClassName: my-priority-class
     asserts:
       - matchSnapshot: {}
+
+  - it: manifest should match snapshot with global priority class
+    set:
+      global:
+        priorityClassName: my-global-priority-class
+    asserts:
+      - matchSnapshot: {}
