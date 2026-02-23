@@ -18,7 +18,7 @@ require (
 	github.com/stretchr/testify v1.11.1
 	golang.org/x/exp v0.0.0-20251113190631-e25ba8c21ef6
 	google.golang.org/protobuf v1.36.11
-	istio.io/api v1.28.3
+	istio.io/api v1.29.0
 	istio.io/client-go v1.28.3
 	k8s.io/apimachinery v0.35.1
 	k8s.io/client-go v0.35.1
@@ -86,7 +86,7 @@ require (
 	golang.org/x/term v0.39.0 // indirect
 	golang.org/x/text v0.34.0 // indirect
 	golang.org/x/time v0.14.0 // indirect
-	google.golang.org/genproto/googleapis/api v0.0.0-20251111163417-95abcf5c77ba // indirect
+	google.golang.org/genproto/googleapis/api v0.0.0-20251213004720-97cd9d5aeac2 // indirect
 	gopkg.in/evanphx/json-patch.v4 v4.13.0 // indirect
 	gopkg.in/inf.v0 v0.9.1 // indirect
 	gopkg.in/yaml.v3 v3.0.1 // indirect
