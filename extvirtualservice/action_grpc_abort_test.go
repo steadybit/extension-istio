@@ -24,7 +24,7 @@ func Test_toGrpcAbortFault(t *testing.T) {
 			name: "generates a gRPC fault structure",
 			args: args{
 				request: extutil.JsonMangle(action_kit_api.PrepareActionRequestBody{
-					Config: map[string]interface{}{
+					Config: map[string]any{
 						"statusCode": "UNAVAILABLE",
 						"percentage": 67.0,
 					},

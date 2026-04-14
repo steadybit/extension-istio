@@ -26,7 +26,7 @@ func Test_toHTTPDelayFault(t *testing.T) {
 			name: "generates a HTTP abort structure",
 			args: args{
 				request: extutil.JsonMangle(action_kit_api.PrepareActionRequestBody{
-					Config: map[string]interface{}{
+					Config: map[string]any{
 						"delay":      5000.0,
 						"percentage": 67.0,
 					},
