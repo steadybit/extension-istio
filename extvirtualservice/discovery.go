@@ -12,7 +12,6 @@ import (
 	"github.com/steadybit/extension-istio/extclient"
 	"github.com/steadybit/extension-istio/extconfig"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	"time"
 )
 
@@ -40,7 +39,7 @@ func (d *serviceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 		Discover: discovery_kit_api.DescribingEndpointReferenceWithCallInterval{
 			Method:       "GET",
 			Path:         discoveryBasePath + "/discovered-targets",
-			CallInterval: extutil.Ptr("30s"),
+			CallInterval: new("30s"),
 		},
 	}
 }
@@ -48,9 +47,9 @@ func (d *serviceDiscovery) Describe() discovery_kit_api.DiscoveryDescription {
 func (d *serviceDiscovery) DescribeTarget() discovery_kit_api.TargetDescription {
 	return discovery_kit_api.TargetDescription{
 		Id:       VirtualServiceTargetID,
-		Icon:     extutil.Ptr(targetIcon),
+		Icon:     new(targetIcon),
 		Label:    discovery_kit_api.PluralLabel{One: "Virtual Service", Other: "Virtual Services"},
-		Category: extutil.Ptr("Kubernetes"),
+		Category: new("Kubernetes"),
 		Version:  extbuild.GetSemverVersionStringOrUnknown(),
 
 		Table: discovery_kit_api.Table{

@@ -9,7 +9,6 @@ import (
 	"github.com/steadybit/action-kit/go/action_kit_api/v2"
 	"github.com/steadybit/action-kit/go/action_kit_sdk"
 	"github.com/steadybit/extension-kit/extbuild"
-	"github.com/steadybit/extension-kit/extutil"
 	networkingv1 "istio.io/api/networking/v1"
 )
 
@@ -33,46 +32,46 @@ func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 		Label:       "gRPC Abort",
 		Description: "Injects a gRPC abort fault into all gRPC routes of the targeted virtual services. Abort requests before forwarding, emulating various failures such as network issues, overloaded upstream service, etc.",
 		Version:     extbuild.GetSemverVersionStringOrUnknown(),
-		Icon:        extutil.Ptr(targetIcon),
-		TargetSelection: extutil.Ptr(action_kit_api.TargetSelection{
+		Icon:        new(targetIcon),
+		TargetSelection: new(action_kit_api.TargetSelection{
 			TargetType: VirtualServiceTargetID,
-			SelectionTemplates: extutil.Ptr([]action_kit_api.TargetSelectionTemplate{
+			SelectionTemplates: new([]action_kit_api.TargetSelectionTemplate{
 				{
 					Label: "name",
 					Query: "istio.virtual-service.name=\"\"",
 				},
 			}),
 		}),
-		Technology:  extutil.Ptr("Istio"),
+		Technology:  new("Istio"),
 		Kind:        action_kit_api.Attack,
 		TimeControl: action_kit_api.TimeControlExternal,
 		Parameters: append([]action_kit_api.ActionParameter{
 			{
 				Name:         "duration",
 				Label:        "Duration",
-				Description:  extutil.Ptr("Duration defining for how long the gRPC abort should be injected."),
+				Description:  new("Duration defining for how long the gRPC abort should be injected."),
 				Type:         action_kit_api.ActionParameterTypeDuration,
-				DefaultValue: extutil.Ptr("30s"),
-				Required:     extutil.Ptr(true),
-				Order:        extutil.Ptr(0),
+				DefaultValue: new("30s"),
+				Required:     new(true),
+				Order:        new(0),
 			},
 			{
 				Name:         "percentage",
 				Label:        "Percentage",
-				Description:  extutil.Ptr("Percentage of requests on which the abort will be injected."),
+				Description:  new("Percentage of requests on which the abort will be injected."),
 				Type:         action_kit_api.ActionParameterTypePercentage,
-				DefaultValue: extutil.Ptr("50"),
-				Required:     extutil.Ptr(true),
-				Order:        extutil.Ptr(1),
+				DefaultValue: new("50"),
+				Required:     new(true),
+				Order:        new(1),
 			},
 			{
 				Name:         "statusCode",
 				Label:        "gRPC status code",
-				Description:  extutil.Ptr("gRPC status code to use for aborted requests."),
+				Description:  new("gRPC status code to use for aborted requests."),
 				Type:         action_kit_api.ActionParameterTypeString,
-				DefaultValue: extutil.Ptr("UNAVAILABLE"),
+				DefaultValue: new("UNAVAILABLE"),
 				// See https://github.com/grpc/grpc/blob/master/doc/statuscodes.md
-				Options: extutil.Ptr([]action_kit_api.ParameterOption{
+				Options: new([]action_kit_api.ParameterOption{
 					action_kit_api.ExplicitParameterOption{
 						Label: "Ok",
 						Value: "OK",
@@ -142,13 +141,13 @@ func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 						Value: "UNAUTHENTICATED",
 					},
 				}),
-				Required: extutil.Ptr(true),
-				Order:    extutil.Ptr(2),
+				Required: new(true),
+				Order:    new(2),
 			},
 		}, getAdvancedTargetingParameters(3)...),
 		Prepare: action_kit_api.MutatingEndpointReference{},
 		Start:   action_kit_api.MutatingEndpointReference{},
-		Stop:    extutil.Ptr(action_kit_api.MutatingEndpointReference{}),
+		Stop:    new(action_kit_api.MutatingEndpointReference{}),
 	}
 }
 

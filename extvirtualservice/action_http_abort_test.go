@@ -24,7 +24,7 @@ func Test_toHTTPAbortFault(t *testing.T) {
 			name: "generates a HTTP abort structure",
 			args: args{
 				request: extutil.JsonMangle(action_kit_api.PrepareActionRequestBody{
-					Config: map[string]interface{}{
+					Config: map[string]any{
 						"statusCode": 404.0,
 						"percentage": 67.0,
 					},

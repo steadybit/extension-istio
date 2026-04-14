@@ -71,7 +71,7 @@ func Test_attackLifecycle(t *testing.T) {
 				"istio.virtual-service.name": {"shop"},
 			},
 		},
-		Config: map[string]interface{}{
+		Config: map[string]any{
 			"delay":            5000.0,
 			"percentage":       69.0,
 			"sourceLabels":     []any{},
@@ -213,14 +213,14 @@ func Test_attackLifecycle_with_client_restriction(t *testing.T) {
 				"istio.virtual-service.name": {"shop"},
 			},
 		},
-		Config: map[string]interface{}{
+		Config: map[string]any{
 			"delay":      5000.0,
 			"percentage": 69.0,
-			"sourceLabels": []interface{}{
-				map[string]interface{}{"key": "env", "value": "prod"},
+			"sourceLabels": []any{
+				map[string]any{"key": "env", "value": "prod"},
 			},
-			"headers": []interface{}{
-				map[string]interface{}{"key": "Accept", "value": "application/json"},
+			"headers": []any{
+				map[string]any{"key": "Accept", "value": "application/json"},
 			},
 			"headersMatchType": "exact",
 		},
@@ -385,11 +385,11 @@ func Test_attackLifecycle_with_source_label(t *testing.T) {
 				"istio.virtual-service.name": {"shop"},
 			},
 		},
-		Config: map[string]interface{}{
+		Config: map[string]any{
 			"delay":      5000.0,
 			"percentage": 69.0,
-			"sourceLabels": []interface{}{
-				map[string]interface{}{"key": "env", "value": "dev"},
+			"sourceLabels": []any{
+				map[string]any{"key": "env", "value": "dev"},
 			},
 			"headers":          []any{},
 			"headersMatchType": "exact",
