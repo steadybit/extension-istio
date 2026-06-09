@@ -1,9 +1,14 @@
 # Contributing
 
-## Starting Istio Locally
+## Prerequisites
 
-You can follow Istio's official [getting started](https://istio.io/latest/docs/setup/getting-started/) documentation to run Istio locally, e.g., within minikube. As part of this guide, you will configure
-a `VirtualService` resource that you can use within experiments.
+To build and run this extension locally, you need:
+
+- [Go](https://go.dev/dl/) 1.26 or later
+- [GNU Make](https://www.gnu.org/software/make/)
+- [GoReleaser](https://goreleaser.com/) (used by `make build`)
+- [Docker](https://www.docker.com/) (required for `make container` and container-based tests)
+- [Helm](https://helm.sh/docs/intro/install/) and [helm-unittest](https://github.com/helm-unittest/helm-unittest) (for chart development; `make charttesting` and `make chartlint`)
 
 ## Getting Started
 
@@ -14,16 +19,22 @@ a `VirtualService` resource that you can use within experiments.
 
 You may alternatively find the HTTP requests within `example/http` to call the HTTP endpoints.
 
+## Starting Istio Locally
+
+You can follow Istio's official [getting started](https://istio.io/latest/docs/setup/getting-started/) documentation to run Istio locally, e.g., within minikube. As part of this guide, you will configure
+a `VirtualService` resource that you can use within experiments.
+
 ## Tasks
 
-The `Makefile` in the project root contains commands to easily run common admin tasks:
+The `Makefile` in the project root contains commands to easily run common admin tasks. Run `make help` to list all available targets.
 
-| Command        | Meaning                                                                                               |
-|----------------|-------------------------------------------------------------------------------------------------------|
-| `$ make tidy`  | Format all code using `go fmt` and tidy the `go.mod` file.                                            |
-| `$ make audit` | Run `go vet`, `staticheck`, execute all tests and verify required modules.                            |
-| `$ make build` | Build a binary for the extension. Creates a file called `extension` in the repository root directory. |
-| `$ make run`   | Build and then run the created binary.                                                                |
+| Command            | Meaning                                                                                               |
+|--------------------|-------------------------------------------------------------------------------------------------------|
+| `$ make tidy`      | Format all code using `go fmt` and tidy the `go.mod` file.                                            |
+| `$ make audit`     | Run `go vet`, `staticcheck`, execute all tests and verify required modules.                           |
+| `$ make build`     | Build a binary for the extension. Creates a file called `extension` in the repository root directory. |
+| `$ make run`       | Build and then run the created binary.                                                                |
+| `$ make container` | Build the container image (`extension-istio:latest`) using Docker buildx.                             |
 
 ## Releasing the Code/Docker Image
 
