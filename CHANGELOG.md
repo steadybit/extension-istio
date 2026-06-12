@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.23
+
+- chore(deps): bump istio.io/api from 1.30.0 to 1.30.1
+- chore(deps): bump istio.io/client-go from 1.30.0 to 1.30.1
+- chore: update to go 1.26.4
+- feat: add weekly auto patch-release workflow
+
 ## v1.0.22
 
 - Support discovery group attribute via `STEADYBIT_EXTENSION_DISCOVERY_GROUP` env var (or `discovery.group` Helm value) — when set, the extension adds `steadybit.group=<value>` to every discovered target
