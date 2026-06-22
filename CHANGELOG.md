@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.24
+
+- build: rename workflow_dispatch input labels for the GH UI
+- chore(deps): bump alpine from 3.23 to 3.24
+- chore(deps): bump golang.org/x/net to v0.55.0 (CVE-2026-39821) (#298)
+- chore(deps): bump k8s.io/client-go from 0.36.1 to 0.36.2
+
 ## v1.0.23
 
 - chore(deps): bump istio.io/api from 1.30.0 to 1.30.1
