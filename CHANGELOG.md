@@ -1,5 +1,17 @@
 # Changelog
 
+## v1.0.25
+
+- chore(deps): bump github.com/steadybit/action-kit/go/action_kit_sdk
+- chore(deps): bump github.com/steadybit/discovery-kit/go/discovery_kit_sdk
+- chore(deps): bump github.com/steadybit/extension-kit
+- chore(deps): bump go to 1.26.5 (#311)
+- chore(deps): bump istio.io/api from 1.30.1 to 1.30.2
+- chore(deps): bump istio.io/client-go from 1.30.1 to 1.30.2
+- chore: add Claude Code workflows (#305)
+- chore: silence SonarQube finding on secrets: inherit in Claude workflows
+- refactor: register extension index via exthttp.RegisterRevisionedHandler (#312)
+
 ## v1.0.24
 
 - chore(deps): bump alpine from 3.23 to 3.24
