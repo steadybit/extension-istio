@@ -1,5 +1,9 @@
 # Changelog
 
+## v1.0.28
+
+- chore(deps): update dependencies
+
 ## v1.0.27
 
 - chore(deps): bump istio.io/api
