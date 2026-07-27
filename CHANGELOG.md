@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.27
+
+- chore(deps): bump istio.io/api
+- chore(deps): bump istio.io/client-go from 1.30.2 to 1.30.3
+
 ## v1.0.26
 
 - ci: skip build on .trivyignore.yml-only changes [skip ci]
