@@ -13,7 +13,15 @@ Learn about the capabilities of this extension in our [Reliability Hub](https://
 | `STEADYBIT_EXTENSION_CLUSTER_NAME`                                  | `kubernetes.clusterName`                       | Kubernetes cluster name.                                                                                               | yes      |         |
 | `STEADYBIT_EXTENSION_DISCOVERY_ATTRIBUTES_EXCLUDES_VIRTUAL_SERVICE` | `discovery.attributes.excludes.virtualService` | List of Target Attributes which will be excluded during discovery. Checked by key equality and supporting trailing "*" | false    |         |
 
-The extension supports all environment variables provided by [steadybit/extension-kit](https://github.com/steadybit/extension-kit#environment-variables).
+Beyond the settings above, this extension supports the configuration common to all Steadybit
+extensions:
+
+- [extension-kit](https://github.com/steadybit/extension-kit#environment-variables) — HTTP and
+  health ports, TLS and mutual TLS, unix domain socket, logging, and pprof.
+- [Target Filtering](https://github.com/steadybit/discovery-kit/blob/main/docs/target-filtering.md) —
+  stop the extension reporting targets you do not want.
+- [Group Matching](https://github.com/steadybit/discovery-kit/blob/main/docs/target-enrichment.md#group-matching) —
+  tag discovered targets with a group, so enrichment rules only match within it.
 
 ## Installation
 
