@@ -18,7 +18,7 @@ require (
 	github.com/stretchr/testify v1.12.1
 	golang.org/x/exp v0.0.0-20260813180055-c1d0aacb2297
 	google.golang.org/protobuf v1.36.12
-	istio.io/api v1.30.3
+	istio.io/api v1.31.0
 	istio.io/client-go v1.30.3
 	k8s.io/apimachinery v0.36.4
 	k8s.io/client-go v0.36.4
