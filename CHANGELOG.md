@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.32
+
+- chore(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- chore(deps): bump istio.io/api from 1.30.3 to 1.31.0
+- chore(deps): bump istio.io/client-go from 1.30.3 to 1.31.0
+
 ## v1.0.31
 
 - chore(deps): bump github.com/steadybit/action-kit/go/action_kit_test
