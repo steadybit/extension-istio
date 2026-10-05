@@ -1,5 +1,12 @@
 # Changelog
 
+## v1.0.35
+
+- chore(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- chore(deps): bump istio.io/api from 1.31.0 to 1.31.1
+- chore(deps): bump istio.io/client-go from 1.31.0 to 1.31.1
+- chore(deps): bump k8s.io/client-go from 0.37.0 to 0.37.1
+
 ## v1.0.34
 
 - Add OpenTelemetry tracing support
