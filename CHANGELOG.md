@@ -1,5 +1,10 @@
 # Changelog
 
+## v1.0.37
+
+- chore(deps): bump istio.io/api from 1.31.1 to 1.31.2
+- chore(deps): bump istio.io/client-go from 1.31.1 to 1.31.2
+
 ## v1.0.36
 
 - chore(deps): bump golang.org/x/net to v0.61.0
