@@ -1,5 +1,13 @@
 # Changelog
 
+## v1.0.38
+
+- chore(deps): bump github.com/KimMachineGun/automemlimit
+- chore(deps): bump github.com/steadybit/action-kit/go/action_kit_test
+- chore(deps): bump github.com/steadybit/extension-kit
+- chore(deps): bump istio.io/api
+- chore(deps): bump istio.io/client-go from 1.31.2 to 1.31.3
+
 ## v1.0.37
 
 - chore(deps): bump istio.io/api from 1.31.1 to 1.31.2
