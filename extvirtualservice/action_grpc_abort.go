@@ -42,9 +42,10 @@ func (f GrpcAbortAction) Describe() action_kit_api.ActionDescription {
 				},
 			}),
 		}),
-		Technology:  new("Istio"),
-		Kind:        action_kit_api.Attack,
-		TimeControl: action_kit_api.TimeControlExternal,
+		Technology:      new("Istio"),
+		Kind:            action_kit_api.Attack,
+		TimeControl:     action_kit_api.TimeControlExternal,
+		ParameterGroups: new([]action_kit_api.ParameterGroup{trafficFilterGroup}),
 		Parameters: append([]action_kit_api.ActionParameter{
 			{
 				Name:         "duration",

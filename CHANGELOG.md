@@ -1,5 +1,9 @@
 # Changelog
 
+## Unreleased
+
+- feat: HTTP Abort, HTTP Delay and gRPC Abort show their request filters (headers, header match type, source labels) in a "Traffic Filter" group on platforms that support parameter groups
+
 ## v1.0.38
 
 - chore(deps): bump github.com/KimMachineGun/automemlimit

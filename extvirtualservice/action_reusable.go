@@ -30,6 +30,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 			Description: new("Restrict the fault injection to those HTTP requests that carry all of these HTTP header key/value pairs."),
 			Type:        action_kit_api.ActionParameterTypeKeyValue,
 			Advanced:    new(true),
+			Group:       new(groupTrafficFilter),
 			Required:    new(false),
 			Order:       new(startOrder + 1),
 		},
@@ -54,6 +55,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 			}),
 			DefaultValue: new("exact"),
 			Advanced:     new(true),
+			Group:        new(groupTrafficFilter),
 			Required:     new(true),
 			Order:        new(startOrder + 2),
 		},
@@ -63,6 +65,7 @@ func getAdvancedTargetingParameters(startOrder int) []action_kit_api.ActionParam
 			Description: new("Restrict the fault injection to those HTTP requests coming from source (client) workloads with the given labels."),
 			Type:        action_kit_api.ActionParameterTypeKeyValue,
 			Advanced:    new(true),
+			Group:       new(groupTrafficFilter),
 			Required:    new(false),
 			Order:       new(startOrder + 3),
 			Hint: new(action_kit_api.ActionHint{
