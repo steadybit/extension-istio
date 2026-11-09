@@ -1,8 +1,15 @@
 # Changelog
 
-## Unreleased
+## v1.0.39
 
+- chore(deps): bump golang.org/x/net to v0.62.0
+- chore(deps): bump istio.io/api from 1.32.0-beta.0 to 1.32.0-rc.1
+- chore(deps): bump istio.io/api from 1.32.0-rc.1 to 1.32.0-rc.2
+- chore(deps): bump istio.io/client-go from 1.31.3 to 1.31.4
+- chore(deps): bump k8s.io/apimachinery from 0.37.1 to 0.37.2
+- chore(deps): bump k8s.io/client-go from 0.37.1 to 0.37.2
 - feat: HTTP Abort, HTTP Delay and gRPC Abort show their request filters (headers, header match type, source labels) in a "Traffic Filter" group on platforms that support parameter groups
+- feat: show the request filters of the Istio attacks in a Traffic Filter group
 
 ## v1.0.38
 
