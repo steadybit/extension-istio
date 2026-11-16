@@ -1,5 +1,11 @@
 # Changelog
 
+## v1.0.40
+
+- chore(deps): bump github.com/steadybit/discovery-kit/go/discovery_kit_sdk
+- chore(deps): bump istio.io/api from 1.32.0-rc.2 to 1.32.0
+- chore(deps): bump istio.io/client-go from 1.31.4 to 1.32.0
+
 ## v1.0.39
 
 - chore(deps): bump golang.org/x/net to v0.62.0
