@@ -21,9 +21,6 @@ The extension was built for sidecar mode and has limited use in
 - The *source labels* filter of the attacks relies on sidecar semantics and may not match as expected
   on a waypoint.
 
-If you run ambient mode, verify the effect of an attack on a non-critical service before relying on it
-in an experiment.
-
 ## Configuration
 
 | Environment Variable                                                | Helm value                                     | Meaning                                                                                                                | Required | Default |
