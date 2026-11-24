@@ -6,6 +6,24 @@ This [Steadybit](https://www.steadybit.com/) extension enables the injection of 
 
 Learn about the capabilities of this extension in our [Reliability Hub](https://hub.steadybit.com/extension/com.steadybit.extension_istio).
 
+## Istio ambient mode
+
+The extension was built for sidecar mode and has limited use in
+[ambient mode](https://istio.io/latest/docs/ambient/overview/):
+
+- Fault injection is a layer 7 feature. In ambient mode it is only enforced by a
+  [waypoint proxy](https://istio.io/latest/docs/ambient/usage/waypoint/). For a workload without a
+  waypoint, the attack modifies the virtual service but the fault has **no effect** on traffic.
+- Istio's support for `VirtualService` on waypoints is alpha, and a virtual service must not be combined
+  with an `HTTPRoute` for the same service.
+- Ambient meshes usually route with the Gateway API (`HTTPRoute`, `GRPCRoute`). The extension only
+  discovers `VirtualService` resources, so such a mesh shows no targets.
+- The *source labels* filter of the attacks relies on sidecar semantics and may not match as expected
+  on a waypoint.
+
+If you run ambient mode, verify the effect of an attack on a non-critical service before relying on it
+in an experiment.
+
 ## Configuration
 
 | Environment Variable                                                | Helm value                                     | Meaning                                                                                                                | Required | Default |
